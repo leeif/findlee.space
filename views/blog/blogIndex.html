@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live And Move</title>
+  <link rel="stylesheet" type="text/css" href="http://<%= host %>/blog/css/app.css">
+</head>
+
+<body>
+  <!-- top bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <a href="">lee</a>
+    </div>
+    <ul class="top-nav">
+      <li><a href="">home</a></li>
+      <li><a href="">blog</a></li>
+      <li><a href="">contact</a></li>
+    </ul>
+  </div>
+  <!-- header -->
+  <header class="header">
+    <ul class="header-subnav">
+      <li><a href="" class="is-active">Articles</a></li>
+      <li><a href="">Images</a></li>
+      <li><a href="">Music</a></li>
+    </ul>
+  </header>
+
+  <!-- blog list -->
+  <% blogList.forEach(function(blog){ %>
+    <div class="row medium-9 large-6">
+      <article class="blog-post">
+        <section class="title clearfix">
+          <h3><a href="http://<%= host %>/blog/article/<%= blog.cid %>"><%= blog.title %></a></h3>
+          <p><%= blog.formateCreated %></p>
+        </section>
+        <section class="keyword">
+          <ul>
+            <% blog.metas.forEach(function(meta){ %>
+              <li class="tag"><%= meta %></li>
+            <% }); %>
+          </ul>
+        </section>
+        <section class="content">
+          <small>
+          </small>
+        </section>
+      </article>
+    </div>
+  <% }); %>
+  <!-- footer -->
+  <div class="footer">
+    <p class="copyright">&copy; Desgin by Lee 2016</p>
+  </div>
+</body>
+
+</html>

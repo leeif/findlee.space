@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live And Move</title>
+  <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
+  <link rel="stylesheet" href="http://<%= host %>/blog/css/monokai-sublime.css">
+</head>
+
+<body>
+  <!-- top bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <a href="">lee</a>
+    </div>
+    <ul class="top-nav">
+      <li><a href="">home</a></li>
+      <li><a href="">blog</a></li>
+      <li><a href="">contact</a></li>
+    </ul>
+  </div>
+  <!-- article -->
+  <article class="article">
+    <section class="title row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+      <h3 class="columns"><%= blog.title %></h3>
+      <div class="columns">
+        <ul>
+          <% blog.metas.forEach(function(tag){ %>
+            <li class="tag">
+              <%= tag %>
+            </li>
+            <% }); %>
+        </ul>
+      </div>
+      <div class="author">
+      </div class="date">
+      <div>
+      </div>
+    </section>
+    <div class="body">
+      <section class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+        <div class="blog-display column large-8" id="blog-display">
+          <%- blog.formatMark.text %>
+        </div>
+        <div class="side-menu large-4 columns">
+          <nav class="columns float-panel">
+            <% function showTitle(data){ %>
+              <% if(data.lowerDepth.length !== 0) {%>
+                <ul>
+                  <% data.lowerDepth.forEach(function(item) { %>
+                    <li>
+                      <a href="#header<%= item.num %>">
+                        <%= item.text %>
+                      </a>
+                    </li>
+                    <% showTitle(item); %>
+                      <% }); %>
+                </ul>
+                <% } %>
+              <% } %>
+            <% showTitle(blog.formatMark.title) %>
+          </nav>
+        </div>
+      </section>
+    </div>
+  </article>
+  <div class="footer">
+    <p class="copyright">&copy; Desgin by Lee 2016</p>
+  </div>
+  <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.easing.1.2.js"></script>
+  <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.visualNav.min.js"></script>
+  <script type="text/javascript" src="http://<%= host %>/globalscript/float-panel.js"></script>
+  <script type="text/javascript">
+  $(function() {
+    $('.side-menu').visualNav({
+      link: 'a', // add a link class, as necessary (e.g. 'a.menu')
+      targetAttr: 'href', // added in case you have link = "div" and attribute something like
+      selectedAppliedTo: 'li', // where to add the selected class name; to only apply to the link, use the same value as is in the link option
+      contentClass: 'content', // content class to get height of the section
+      contentLinks: 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll)
+      externalLinks: 'external', // class name of links that link to external content.
+      useHash: true, // if true, the location hash will be updated
+
+      // Classes added to items
+      inViewClass: 'inView', // css class added to items in the viewport
+      selectedClass: 'selected', // css class applied to menu when a link is selected (highlighted)
+      currentContent: 'current', // css class applied to the content block when it is currently selected in the menu.
+
+      // Appearance
+      bottomMargin: 0, // margin from the end of the page where the last menu item is used (in case the target is short)
+      fitContent: false, // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
+      offsetTop: 0, // add a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
+      scrollOnInit: false, // scroll to first item automatically on initialization
+
+      // Animation
+      animationTime: 500, // page scrolling time in milliseconds or function( distance ) { return milliseconds; }
+      stopOnInteraction: true, // if the user presses any key or scrolls the mouse, the animation will cancel
+      easing: ['swing', 'swing'], // horizontal, vertical easing; it might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+
+      // Callbacks
+      // visNav is visualNavigation object (see the callbacks page)
+      // $selected is a jQuery object of the currently selected content (class name from "contentClass")
+      initialized: function(visNav, $selected) {}, // Callback executed when the visualNav plugin has finished initializing
+      beforeAnimation: function(visNav, $selected) {}, // Callback executed before the animation begins moving to the targetted element
+      complete: function(visNav, $selected) {}, // Callback executed when the targetted element is in view and scrolling animation has completed
+      changed: function(visNav, $selected) {} // Callback executed every time the current menu item changes
+    });
+  });
+  </script>
+</body>
+
+</html>

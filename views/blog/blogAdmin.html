@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live And Move</title>
+  <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
+  <link rel="stylesheet" href="http://<%= host %>/blog/css/monokai-sublime.css">
+</head>
+<body>
+  <!-- top bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <a href="">lee</a>
+    </div>
+    <ul class="top-nav">
+      <li><a href="">home</a></li>
+      <li><a href="">blog</a></li>
+      <li><a href="">contact</a></li>
+    </ul>
+  </div>
+  <!-- editor -->
+  <div class="row editor-title">
+    <input type="text" placeholder="Enter your title here" class="title"></input>
+  </div>
+  <div class="row editor">
+    <textarea class="large-6 column markdown"></textarea>
+    <div class="large-6 column preview blog-display">
+    </div>
+  </div>
+  <div class="editor-footer">
+    <a class="button">Publish</a>
+  </div>
+  <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
+  <script src="http://<%= host %>/components/marked/marked.min.js"></script>
+  <script src="http://<%= host %>/components/highlightjs/highlight.pack.js"></script>
+  <script src="http://<%= host %>/blog/js/marked-setting.js"></script>
+  <script src="http://<%= host %>/blog/js/blog-admin.js"></script>
+</body>
+
+</html>
