@@ -145,6 +145,7 @@ Editor.prototype.update = function() {
     text: this.article.text,
     modified: Date.now() / 1000
   };
+  console.log(data);
   $.ajax({
     url: 'http://' + window.location.host + '/blog/api/article/update',
     method: 'put',
@@ -156,7 +157,7 @@ Editor.prototype.update = function() {
     if (result.redirectURL) {
       var url = 'http://' + window.location.host + result.redirectURL;
       console.log(url);
-      window.location.href = url;
+      // window.location.href = url;
     }
   }).fail(function(err) {
     console.log(err);

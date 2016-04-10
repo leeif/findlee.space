@@ -42,7 +42,7 @@ PutManager.prototype.articleUpdate = function(article, callback) {
         insertUser = yield self.dBExecute({
           actionType: 'insert',
           sql: 'insert into users(screenName) values (' +
-            self.sqlEscape(article.name) +
+            self.sqlEscape(article.author) +
             ')'
         });
         authorId = insertUser.insertId;
