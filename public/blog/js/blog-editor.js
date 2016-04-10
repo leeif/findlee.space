@@ -48,7 +48,7 @@ Editor.prototype.setTextListener = function() {
   var self = this;
   this.option.text.bind('input propertychange', function() {
     //update preview
-    self.option.preview.html(marked(self.text.val()));
+    self.option.preview.html(marked(self.option.text.val()));
     //update article object
     self.article.text = self.option.text.val();
   });
