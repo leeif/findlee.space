@@ -1,6 +1,6 @@
-var Base = require('./BaseController.js');
+var Base = require('../BaseController.js');
 var util = require('util');
-var DBHelper = require('../module/DBHelper');
+var DBHelper = require('../../module/DBHelper');
 
 function UserRegister(){
   Base.call(this);

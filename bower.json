@@ -1,13 +1,12 @@
 {
-  "name": "foundation-sites-template",
+  "name": "findlee",
   "version": "1.0.0",
   "authors": [
-    "ZURB <foundation@zurb.com>"
+    "LEE <findlee.space>"
   ],
-  "description": "Basic template for a new Foundation for Sites project.",
+  "description": "server of lee's vps",
   "main": "index.html",
-  "license": "MIT",
-  "homepage": "http://foundation.zurb.com",
+  "homepage": "findlee.space",
   "dependencies": {
     "foundation-sites": "~6.1.0",
     "motion-ui": "~1.1.0",
@@ -17,7 +16,7 @@
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components",
+    "public/components",
     "test",
     "tests"
   ],

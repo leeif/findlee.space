@@ -35,13 +35,13 @@
     <div class="row medium-9 large-6">
       <article class="blog-post">
         <section class="title clearfix">
-          <h3><a href="http://<%= host %>/blog/article/<%= blog.cid %>"><%= blog.title %></a></h3>
+          <h4><a href="http://<%= host %>/blog/article/<%= blog.cid %>"><%= blog.title %></a></h4>
           <p><%= blog.formateCreated %></p>
         </section>
         <section class="keyword">
           <ul>
             <% blog.metas.forEach(function(meta){ %>
-              <li class="tag"><%= meta %></li>
+              <li class="tag"><%= meta.name %></li>
             <% }); %>
           </ul>
         </section>

@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live And Move</title>
   <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
-  <link rel="stylesheet" href="http://<%= host %>/blog/css/monokai-sublime.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
-<body>
+
+<body class="admin">
   <!-- top bar -->
   <div class="top-bar">
     <div class="logo">
@@ -20,22 +22,32 @@
       <li><a href="">contact</a></li>
     </ul>
   </div>
-  <!-- editor -->
-  <div class="row editor-title">
-    <input type="text" placeholder="Enter your title here" class="title"></input>
-  </div>
-  <div class="row editor">
-    <textarea class="large-6 column markdown"></textarea>
-    <div class="large-6 column preview blog-display">
+  <div class="row large-9 medium-7 small-11">
+    <div class="subjects column large-7">
+      <div class="loader" data-loader="circle-side"></div>
+      <div class="board-header">
+        <p>文章</p>
+      </div>
+      <ul>
+      </ul>
+    </div>
+    <div class="tags column large-4">
+      <div class="loader" data-loader="circle-side"></div>
+      <div class="board-header">
+        <p>标签</p>
+      </div>
+      <ul>
+      </ul>
+      <div class="add-tag">
+        <input placeholder="Add a tag..." />
+      </div>
     </div>
   </div>
-  <div class="editor-footer">
-    <a class="button">Publish</a>
+  <!-- footer -->
+  <div class="footer">
+    <p class="copyright">&copy; Desgin by Lee 2016</p>
   </div>
   <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
-  <script src="http://<%= host %>/components/marked/marked.min.js"></script>
-  <script src="http://<%= host %>/components/highlightjs/highlight.pack.js"></script>
-  <script src="http://<%= host %>/blog/js/marked-setting.js"></script>
   <script src="http://<%= host %>/blog/js/blog-admin.js"></script>
 </body>
 

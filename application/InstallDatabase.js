@@ -24,7 +24,7 @@ var relationships = 'create table if not exists relationships( ' +
 
 //create metas table
 var metas = 'create table if not exists metas( ' +
-  'mid int(10) unsigned not null, ' +
+  'mid int(10) unsigned not null auto_increment, ' +
   'name varchar(200), ' +
   'type varchar(32), ' +
   'description varchar(200), ' +

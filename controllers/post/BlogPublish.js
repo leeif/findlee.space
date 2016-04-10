@@ -1,6 +1,6 @@
 var util = require('util');
-var Base = require('./BaseController');
-var Manager = require('../manager/BlogManager');
+var Base = require('../BaseController');
+var Manager = require('../../manager/PostManager');
 
 function BlogPublish() {
   Base.call(this);

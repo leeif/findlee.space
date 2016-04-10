@@ -1,5 +1,5 @@
 var util = require('util');
-var Base = require('./BaseController');
+var Base = require('../BaseController');
 
 function BlogAdmin() {
   Base.call(this);

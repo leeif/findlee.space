@@ -32,6 +32,10 @@ var db = mysql.createPool({
   debug: config.db.debug
 });
 
+if(!db){
+  process.exit(1);
+}
+
 var redis = redis.createClient({
   host: config.redis.host,
   port: config.redis.port,

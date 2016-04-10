@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Live And Move</title>
   <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
-  <link rel="stylesheet" href="http://<%= host %>/blog/css/monokai-sublime.css">
 </head>
 
 <body>
@@ -30,7 +29,7 @@
         <ul>
           <% blog.metas.forEach(function(tag){ %>
             <li class="tag">
-              <%= tag %>
+              <%= tag.name %>
             </li>
             <% }); %>
         </ul>
@@ -67,6 +66,7 @@
       </section>
     </div>
   </article>
+  <!-- footer -->
   <div class="footer">
     <p class="copyright">&copy; Desgin by Lee 2016</p>
   </div>

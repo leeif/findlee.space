@@ -105,14 +105,12 @@ function querySql(table, resultColumns, join, queryColumns, queryData, group) {
 
   if (queryColumns && queryColumns.length > 0) {
     sql += ' where ';
-  } else {
-    return sql;
-  }
-  for (i = 0; i < queryColumns.length; i++) {
-    if (i === 0) {
-      sql = sql + queryColumns[i] + '=' + sqlEscape(queryData[i]);
-    } else {
-      sql += ' and ' + queryColumns[i] + '=' + sqlEscape(queryData[i]);
+    for (i = 0; i < queryColumns.length; i++) {
+      if (i === 0) {
+        sql = sql + queryColumns[i] + '=' + sqlEscape(queryData[i]);
+      } else {
+        sql += ' and ' + queryColumns[i] + '=' + sqlEscape(queryData[i]);
+      }
     }
   }
 

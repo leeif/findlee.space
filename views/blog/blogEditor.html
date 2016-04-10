@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live And Move</title>
+  <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+
+<body class="editor">
+  <!-- top bar -->
+  <div class="top-bar">
+    <div class="logo">
+      <a href="">lee</a>
+    </div>
+    <ul class="top-nav">
+      <li><a href="">home</a></li>
+      <li><a href="">blog</a></li>
+      <li><a href="">contact</a></li>
+    </ul>
+  </div>
+  <!-- editor -->
+  <div class="row editor-title">
+    <input type="text" placeholder="Enter your title here" class="title"></input>
+  </div>
+  <div class="row">
+    <div class="column large-3 editor-author">
+      <input type="text" placeholder="Add Author"></input>
+    </div>
+    <div class="column large-8 editor-tag">
+      <input type="text" placeholder="Add A Tag" class="input" data-toggle="tags-dropdown"></input>
+      <div class="dropdown-pane" id="tags-dropdown" data-dropdown data-auto-focus="true">
+      </div>
+    </div>
+  </div>
+  <div class="row editor-text">
+    <textarea class="large-6 column markdown"></textarea>
+    <div class="large-6 column preview blog-display">
+    </div>
+  </div>
+  <div class="editor-footer">
+    <% if(type === 'write') {%>
+      <a class="button publish">Publish</a>
+      <% } else if(type === 'edit') {%>
+        <a class="button update">Update</a>
+        <% } %>
+  </div>
+  <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
+  <script src="http://<%= host %>/components/marked/marked.min.js"></script>
+  <script src="http://<%= host %>/components/highlightjs/highlight.pack.js"></script>
+  <script src="http://<%= host %>/components/foundation-sites/dist/foundation.min.js"></script>
+  <script src="http://<%= host %>/blog/js/marked-setting.js"></script>
+  <script src="http://<%= host %>/blog/js/blog-editor.js"></script>
+  <script type="text/javascript">
+  var type = '<%= type %>';
+  var cid = null;
+  <% if(type === 'edit') {%>
+  cid = <%= cid %>;
+  <% } %>
+  $(document).foundation();
+  </script>
+</body>
+
+</html>

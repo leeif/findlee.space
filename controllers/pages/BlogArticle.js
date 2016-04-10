@@ -1,6 +1,6 @@
 var util = require('util');
-var Base = require('./BaseController');
-var Manager = require('../manager/BlogManager');
+var Base = require('../BaseController');
+var Manager = require('../../manager/GetManager');
 
 function BlogArticle() {
   Base.call(this);
@@ -11,7 +11,7 @@ util.inherits(BlogArticle, Base);
 BlogArticle.prototype.run = function(req, res, next) {
   BlogArticle.super_.prototype.run.call(this, req, res);
   var manager = Manager.getInstance(req.db, req.redis);
-  manager.getBlog(req.params.cid, function(err, blog) {
+  manager.getArticle(req.params.cid, function(err, blog) {
     if (err) {
       next(err);
     } else {
