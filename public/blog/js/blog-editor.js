@@ -9,10 +9,10 @@ Editor.prototype.init = function() {
   this.setListener();
   if (this.option.type === 'edit' && this.option.cid) {
     this.bindUpdate(this.option.updateButton);
+    this.loadArctile();
   } else {
     this.bindPublish(this.option.publishButton);
   }
-  this.loadArctile();
 };
 
 Editor.prototype.setListener = function() {
@@ -118,8 +118,8 @@ Editor.prototype.addRelationship = function(mid, callback) {
 
 Editor.prototype.publish = function() {
   var data = {
-    title: this.article.title.val(),
-    text: this.article.text.val(),
+    title: this.article.title,
+    text: this.article.text,
     created: Date.now() / 1000,
     modified: Date.now() / 1000
   };
@@ -131,7 +131,8 @@ Editor.prototype.publish = function() {
     dataType: 'json'
   }).done(function(data) {
     console.log(data);
-    alert('publish success');
+    var url = 'http://' + window.location.host + '/blog/article/' + data.cid;
+    window.location.href = url;
   }).fail(function() {
     console.log('failed');
   });
@@ -157,7 +158,7 @@ Editor.prototype.update = function() {
     if (result.redirectURL) {
       var url = 'http://' + window.location.host + result.redirectURL;
       console.log(url);
-      // window.location.href = url;
+      window.location.href = url;
     }
   }).fail(function(err) {
     console.log(err);
