@@ -36,7 +36,7 @@
 ehthumbs.db
 Thumbs.db
 
-# #
+#project #
 node_modules
 public/components
 gulpfile.js

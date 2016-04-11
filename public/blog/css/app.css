@@ -4760,7 +4760,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       max-width: 250px; }
     .article .body .side-menu li {
       padding: 0 0.5rem;
-      list-style-position: inside; }
+      list-style-position: outside; }
     .article .body .side-menu a {
       font-weight: bold;
       color: #3a3a3a; }

@@ -153,6 +153,10 @@ PostManager.prototype.publish = function(article, callback) {
   });
 };
 
+PostManager.prototype.login = function(user, callback) {
+  callback(null);
+};
+
 exports.getInstance = function(db, redis) {
   if (managerInstance === null) {
     managerInstance = new PostManager(db, redis);

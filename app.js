@@ -6,8 +6,10 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 var attachDB = require('./middlewares/AttachDB');
 var attachRedis = require('./middlewares/AttachRedis');
+var requireLogin = require('./middlewares/RequireLogin');
 var http = require('http');
 var debug = require('debug')('GCTWServer:server');
 var routes = require('./routers');
@@ -16,11 +18,7 @@ var WsServer = require('./websocket/WsServer');
 var app = express();
 var server = http.createServer(app);
 var wsServer;
-
-/**
- * Get port from environment and store in Express.
- */
-var port = process.argv[2] === 'pro' ? config.app.proPort : config.app.devPort;
+var sess;
 
 // create connection of database
 var db = mysql.createPool({
@@ -32,21 +30,28 @@ var db = mysql.createPool({
   debug: config.db.debug
 });
 
-if(!db){
-  process.exit(1);
-}
 
 var redis = redis.createClient({
   host: config.redis.host,
   port: config.redis.port,
 });
 
+if (!db || !redis) {
+  process.exit(1);
+}
+
 redis.auth(config.redis.password, function(err) {
   if (err) {
+    process.exit(1);
     console.error("redis auth failed");
   }
 });
 
+app.set('domain', process.argv[2] === 'pro' ? config.app.proDomain :
+  config.app.devDomain);
+app.set('port', process.argv[2] === 'pro' ? config.app.proPort :
+  config.app.devPort);
+app.set('env', process.argv[2]);
 app.enable('trust proxy');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,6 +65,8 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cookieParser());
+sess = config.session(app.get('domain'));
+app.use(session(sess));
 app.use(express.static(path.join(__dirname, 'public/')));
 //middlewares that attach db  connection to request object
 app.use(attachDB(db));
@@ -67,6 +74,7 @@ app.use(attachDB(db));
 app.use(attachRedis(redis));
 
 // register router in app.
+app.use(['/blog/admin(?!/login$)*'], requireLogin());
 app.use('/', routes);
 
 // catch 404 and forward to error handler
@@ -80,7 +88,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (process.argv[2] === 'dev') {
+if (app.get('env') === 'dev') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -125,7 +133,7 @@ wsServer = new WsServer(server, db, redis);
 wsServer.startBackgroundWork(config.ws.interval);
 
 //httpserver
-server.listen(port);
+server.listen(app.get('port'));
 server.on('error', onError);
 server.on('listening', onListening);
 server.on('disconnect', onDisconnect);
@@ -140,7 +148,8 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  var bind = typeof port === 'string' ? 'Pipe ' + app.get('port') :
+    'Port ' + app.get('port');
 
   // handle specific listen errors with friendly messages
   switch (error.code) {

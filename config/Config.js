@@ -4,18 +4,18 @@
  */
 exports.db = {
   //database
-  host : 'localhost',
-  user : 'root',
-  password : 'w19920610',
-  database : 'gctw',
-  connectionLimit : 10,
-  debug : false
+  host: 'localhost',
+  user: 'root',
+  password: 'w19920610',
+  database: 'gctw',
+  connectionLimit: 10,
+  debug: false
 };
 
 exports.redis = {
-  host : 'localhost',
-  port : 6379,
-  password : 'w19920610'
+  host: 'localhost',
+  port: 6379,
+  password: 'w19920610'
 };
 
 /**
@@ -23,8 +23,8 @@ exports.redis = {
  * @type {Object}
  */
 exports.ws = {
-  interval : 5000,
-  minDistance : 500
+  interval: 5000,
+  minDistance: 500
 };
 
 /**
@@ -32,6 +32,19 @@ exports.ws = {
  * @type {Object}
  */
 exports.app = {
+  devDomain: 'localhost',
+  proDomain: 'findlee.space',
   devPort: 8080,
-  proPort : 3000
+  proPort: 3000
+};
+
+exports.session = function(domain) {
+  return {
+    secret: 'findlee.space',
+    resave: false,
+    cookie: {
+      maxAge: 3600000,
+      domain: domain
+    }
+  };
 };

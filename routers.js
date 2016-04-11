@@ -7,16 +7,22 @@ var Welcome = require('./controllers/pages/Welcome');
 var BlogIndex = require('./controllers/pages/BlogIndex');
 var BlogAdmin = require('./controllers/pages/BlogAdmin');
 var BlogArticle = require('./controllers/pages/BlogArticle');
-var GetTag = require('./controllers/get/GetTag');
-var GetArticle = require('./controllers/get/GetArticle');
-var BlogPublish = require('./controllers/post/BlogPublish');
 var BlogWrite = require('./controllers/pages/BlogWrite');
 var BlogEdit = require('./controllers/pages/BlogEdit');
-var BlogUpdate = require('./controllers/put/BlogUpdate');
+var BlogLoginPage = require('./controllers/pages/BlogLogin');
+
+var GetTag = require('./controllers/get/GetTag');
+var GetArticle = require('./controllers/get/GetArticle');
+
+var BlogPublish = require('./controllers/post/BlogPublish');
 var AddTag = require('./controllers/post/AddTag');
 var AddRelationship = require('./controllers/post/AddRelationship');
+var BlogLoginURL = require('./controllers/post/BlogLogin');
+
+var BlogUpdate = require('./controllers/put/BlogUpdate');
 var DeleteTag = require('./controllers/delete/DeleteTag');
 var DeleteRelationship = require('./controllers/delete/DeleteRelationship');
+
 var router = express.Router();
 
 //pages
@@ -51,6 +57,11 @@ router.get('/blog/article/:cid', function(req, res, next) {
   blogArticle.run(req, res, next);
 });
 
+router.get('/blog/admin/login', function(req, res, next) {
+  var blogLoginPage = new BlogLoginPage();
+  blogLoginPage.run(req, res, next);
+});
+
 //get
 router.get('/blog/api/tag/get', function(req, res, next) {
   var getTag = new GetTag();
@@ -77,6 +88,11 @@ router.post('/blog/api/tag/add', function(req, res, next) {
 router.post('/blog/api/relationship/add', function(req, res, next) {
   var addRelationship = new AddRelationship();
   addRelationship.run(req, res, next);
+});
+
+router.post('blog/admin/login', function(req, res, next) {
+  var blogLoginURL = new BlogLoginURL();
+  blogLoginURL.run(req, res, next);
 });
 
 //put
