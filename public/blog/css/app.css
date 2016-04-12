@@ -4769,6 +4769,9 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       .article .body .side-menu .selected a {
         color: #ffffff; }
 
+.article code {
+  white-space: pre; }
+
 .blog-login .form {
   width: 100%;
   position: absolute;
