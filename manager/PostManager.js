@@ -61,7 +61,6 @@ PostManager.prototype.addRelationship = function(relationship, callback) {
       status: 200,
     });
   }, function(err) {
-    console.log(err);
     callback({
       status: 500
     });
@@ -113,16 +112,15 @@ PostManager.prototype.articleUpdate = function(article, callback) {
     }
     return updateArticle;
   }).then(function(result) {
-    console.log(result);
     onSuccess(result);
   }, function(err) {
     onError(err);
   });
 
-  function onError() {
+  function onError(err) {
     callback({
       status: 500,
-      error: new Error('server error'),
+      error: err.message,
     });
   }
 
@@ -153,8 +151,35 @@ PostManager.prototype.publish = function(article, callback) {
   });
 };
 
-PostManager.prototype.login = function(user, callback) {
-  callback(null);
+PostManager.prototype.blogLogin = function(user, callback) {
+  var self = this;
+  var queryResult;
+  var sql = user.account.indexOf('@') > -1 ?
+    'select * from users where mail = ' + this.sqlEscape(user.account) :
+    'select * from users where name = ' + this.sqlEscape(user.account);
+  co(function*() {
+    try {
+      queryResult = yield self.dBExecute({
+        actionType: 'query',
+        sql: sql
+      });
+      queryResult = queryResult[0];
+      if (queryResult.length !== 0 && queryResult.password === user.password) {
+        return queryResult.uid;
+      } else {
+        throw new Error('Login Failed');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }).then(function(result) {
+    callback(null, result);
+  }, function(err) {
+    callback({
+      status: 500,
+      err: err.message
+    });
+  });
 };
 
 exports.getInstance = function(db, redis) {

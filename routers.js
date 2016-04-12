@@ -90,7 +90,8 @@ router.post('/blog/api/relationship/add', function(req, res, next) {
   addRelationship.run(req, res, next);
 });
 
-router.post('blog/admin/login', function(req, res, next) {
+router.post('/blog/admin/login', function(req, res, next) {
+  console.log('post login');
   var blogLoginURL = new BlogLoginURL();
   blogLoginURL.run(req, res, next);
 });

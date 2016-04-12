@@ -11,24 +11,38 @@
 </head>
 
 <body class="blog-login">
-  <!-- top bar -->
-  <div class="top-bar">
-    <div class="logo">
-      <a href="">lee</a>
-    </div>
-    <ul class="top-nav">
-      <li><a href="">home</a></li>
-      <li><a href="">blog</a></li>
-      <li><a href="">contact</a></li>
-    </ul>
+  <%- include('blogTopBar.html') %>
+  <div class="form">
+    <form class="row large-5">
+      <fieldset class="fieldset">
+        <legend>Login</legend>
+        <div class="row">
+          <div class="column large-3">
+            <label for="account" class="text-right middle">
+              Account
+            </label>
+          </div>
+          <div class="column large-9">
+            <input id="account" type="text" placeholder="mail/username">
+          </div>
+        </div>
+        <div class="row">
+          <div class="column large-3">
+            <label for="password" class="text-right middle">
+              Password
+            </label>
+          </div>
+          <div class="column large-9">
+            <input id="password" type="password">
+          </div>
+        </div>
+        </fieldset>
+        <div class="login button">Login</div>
+    </form>
   </div>
-  
-  <!-- footer -->
-  <div class="footer">
-    <p class="copyright">&copy; Desgin by Lee 2016</p>
-  </div>
+  <%- include('blogFooter.html') %>  
   <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
-  <script src="http://<%= host %>/blog/js/blog-admin.js"></script>
+  <script src="http://<%= host %>/blog/js/blog-login.js"></script>
 </body>
 
 </html>

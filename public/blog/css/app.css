@@ -4769,9 +4769,27 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       .article .body .side-menu .selected a {
         color: #ffffff; }
 
+.blog-login .form {
+  width: 100%;
+  position: absolute;
+  bottom: 50%;
+  padding: 1rem 0; }
+  .blog-login .form legend, .blog-login .form label {
+    font-weight: bold; }
+  .blog-login .form .login {
+    float: right; }
+
+.blog-login .footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0; }
+
 @font-face {
   font-family: Ninja;
   src: url("../font/njnaruto.ttf"); }
+
+html, body {
+  height: 100%; }
 
 .top-bar {
   padding: 0px; }
@@ -4820,7 +4838,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   background: #ddd;
   font-size: 14px;
   font-weight: bold;
-  text-transform: lowercase;
   color: #76787F; }
 
 .blog-display h1 {
