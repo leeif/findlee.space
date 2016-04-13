@@ -9,14 +9,14 @@ renderer.code = function(code, lang) {
   }
 
   if (!lang) {
-    return '<pre><code class="hljs">' +
+    return '<pre class="hljs">' +
       (escaped ? code : escape(code, true)) +
-      '\n</code></pre>';
+      '\n</pre>';
   }
 
-  return '<pre><code class="hljs ' +
+  return '<pre class="hljs ' +
     this.options.langPrefix + escape(lang, true) + '">' +
-    (escaped ? code : escape(code, true)) + '\n</code></pre>\n';
+    (escaped ? code : escape(code, true)) + '\n</pre>\n';
 };
 marked.setOptions({
   renderer: renderer,

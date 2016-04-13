@@ -3890,6 +3890,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
 
 */
 .hljs {
+  white-space: pre;
   display: block;
   max-height: 500px;
   overflow-x: auto;
@@ -4515,6 +4516,86 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     -ms-transform: rotate(360deg) translateZ(0);
     transform: rotate(360deg) translateZ(0); } }
 
+@font-face {
+  font-family: Ninja;
+  src: url("../font/njnaruto.ttf"); }
+
+html,
+body {
+  height: 100%; }
+
+.top-bar {
+  padding: 0px; }
+  .top-bar .logo {
+    margin-left: 1rem;
+    padding: 0.5rem;
+    position: relative;
+    float: left; }
+    .top-bar .logo a {
+      font-weight: bold;
+      font-family: Ninja;
+      padding: 0;
+      margin: 0;
+      display: block;
+      vertical-align: middle;
+      color: white;
+      text-transform: uppercase; }
+  .top-bar .top-nav {
+    float: right;
+    position: relative;
+    text-align: center;
+    margin: 0px; }
+    .top-bar .top-nav li {
+      display: inline-block; }
+      .top-bar .top-nav li a {
+        padding: 0.5rem 1rem;
+        text-transform: uppercase;
+        display: block; }
+      .top-bar .top-nav li:hover {
+        background: #43494F; }
+
+.footer {
+  background: #3D424A;
+  padding-top: 1rem;
+  padding-bottom: 1rem; }
+  .footer .copyright {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: white; }
+
+.tag {
+  margin-right: 0.5rem;
+  padding: 0 0.3rem;
+  border-radius: 0.2rem;
+  background: #ddd;
+  font-size: 14px;
+  font-weight: bold;
+  color: #76787F; }
+
+.blog-display h1 {
+  border-color: #e6e6e6;
+  border-width: 0px 0px 1px 0px;
+  border-style: solid;
+  padding: 1rem 0 0.5rem 0;
+  font-size: 1.7rem; }
+
+.blog-display h2 {
+  font-size: 1.5rem; }
+
+.blog-display h3 {
+  font-size: 1.3rem; }
+
+.blog-display code {
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: #c7254e;
+  background-color: #f9f2f4; }
+
+.blog-display blockquote {
+  background: #e6e6e6;
+  border-left: 2px solid #2199e8; }
+
 .header {
   text-align: center;
   background: url("../image/kamakura.jpg");
@@ -4749,6 +4830,7 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
     display: inline-block; }
 
 .article .body {
+  word-break: break-all;
   width: 100%;
   background: #FFFFFF; }
   .article .body .side-menu {
@@ -4769,9 +4851,6 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
       .article .body .side-menu .selected a {
         color: #ffffff; }
 
-.article code {
-  white-space: pre; }
-
 .blog-login .form {
   width: 100%;
   position: absolute;
@@ -4786,72 +4865,3 @@ Monokai Sublime style. Derived from Monokai by noformnocontent http://nn.mit-lic
   width: 100%;
   position: absolute;
   bottom: 0; }
-
-@font-face {
-  font-family: Ninja;
-  src: url("../font/njnaruto.ttf"); }
-
-html, body {
-  height: 100%; }
-
-.top-bar {
-  padding: 0px; }
-  .top-bar .logo {
-    margin-left: 1rem;
-    padding: 0.5rem;
-    position: relative;
-    float: left; }
-    .top-bar .logo a {
-      font-weight: bold;
-      font-family: Ninja;
-      padding: 0;
-      margin: 0;
-      display: block;
-      vertical-align: middle;
-      color: white;
-      text-transform: uppercase; }
-  .top-bar .top-nav {
-    float: right;
-    position: relative;
-    text-align: center;
-    margin: 0px; }
-    .top-bar .top-nav li {
-      display: inline-block; }
-      .top-bar .top-nav li a {
-        padding: 0.5rem 1rem;
-        text-transform: uppercase;
-        display: block; }
-      .top-bar .top-nav li:hover {
-        background: #43494F; }
-
-.footer {
-  background: #3D424A;
-  padding-top: 1rem;
-  padding-bottom: 1rem; }
-  .footer .copyright {
-    text-align: center;
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: white; }
-
-.tag {
-  margin-right: 0.5rem;
-  padding: 0 0.3rem;
-  border-radius: 0.2rem;
-  background: #ddd;
-  font-size: 14px;
-  font-weight: bold;
-  color: #76787F; }
-
-.blog-display h1 {
-  border-color: #e6e6e6;
-  border-width: 0px 0px 1px 0px;
-  border-style: solid;
-  padding: 1rem 0 0.5rem 0;
-  font-size: 1.7rem; }
-
-.blog-display h2 {
-  font-size: 1.5rem; }
-
-.blog-display h3 {
-  font-size: 1.3rem; }
