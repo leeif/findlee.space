@@ -1,7 +1,9 @@
 var Base = require('./BaseManager');
 var util = require('util');
-var formater = require('dateformater');
+var models = require('../models');
+var co = require('co');
 var managerInstance = null;
+var formater = require('dateformater');
 var marked = require('../tool/MarkdownConverter');
 
 function GetManager(db, redis) {
@@ -11,62 +13,110 @@ function GetManager(db, redis) {
 util.inherits(GetManager, Base);
 
 GetManager.prototype.getArticle = function(cid, callback) {
-  var sqlData = {
-    table: 'contents',
-    actionType: 'query',
-    resultColumns: cid ? [
-      'contents.*',
-      "group_concat(metas.name separator ',') as mname",
-      "group_concat(metas.mid separator ',') as mid",
-      'users.screenName as author'
-    ] : [
-      'contents.cid',
-      'contents.title',
-      'contents.created',
-      "group_concat(metas.name separator ',') as mname",
-      "group_concat(metas.mid separator ',') as mid"
-    ],
-    queryColumns: cid ? ['contents.cid'] : null,
-    queryData: cid ? [cid] : null,
-    join: cid ? ' left join relationships on relationships.cid = contents.cid ' +
-      'left join metas on relationships.mid = metas.mid ' +
-      'left join users on users.uid = contents.authorId ' : ' left join relationships on relationships.cid = contents.cid ' +
-      'left join metas on relationships.mid = metas.mid ',
-    group: 'group by contents.cid'
-  };
-  var date = new Date();
-  this.dBExecute(sqlData).then(function(blogList) {
-    blogList.forEach(function(blog) {
-      date.setTime(blog.created * 1000);
-      blog.formateCreated = formater.format(date,
-        'YYYY/MM/DD');
-      if (blog.mid) {
-        blog.metas = integrateMetas(blog.mid.split(','),
-          blog.mname.split(','));
-      } else {
-        blog.metas = [];
-      }
-      blog.formatMark = cid ? marked(blog.text) : null;
-    });
-    callback(null, cid ? blogList[0] : blogList);
+  var self = this;
+  var sqlData = {};
+  sqlData.where = [{
+    'cid': cid
+  }];
+  sqlData.include = [{
+    model: models.relationships,
+    include: [{
+      model: models.metas,
+      require: true
+    }]
+  }, {
+    model: models.users,
+  }];
+  co(function*() {
+    var article;
+    var contents;
+    try {
+      contents = yield self.db.contents.get(sqlData);
+      article = formatArticle(contents[0], false);
+    } catch (err) {
+      throw err;
+    }
+    return article;
+  }).then(function(result) {
+    callback(null, result);
   }, function(err) {
     callback(err);
   });
 };
 
-function integrateMetas(mid, mname) {
-  var metas = [];
-  var i;
-  for (i = 0; i < mid.length; i++) {
-    (function(i) {
-      metas.push({
-        mid: mid[i],
-        name: mname[i]
-      });
-    })(i);
+function formatArticle(data, isList) {
+  var article = {};
+  article.cid = data.get('cid');
+  article.title = data.get('title');
+  if (!isList) {
+    article.markdown = data.get('text');
+    if (article.markdown) {
+      article.html = marked(article.markdown);
+    }
   }
-  return metas;
+  article.created = {
+    origin: data.get('created'),
+    formated: formater.format(data.get('created'), 'YYYY/MM/DD')
+  };
+  article.modified = {
+    origin: data.get('modified'),
+    formated: formater.format(data.get('modified'), 'YYYY/MM/DD')
+  };
+  article.metas = [];
+  data.get('relationships').forEach(function(item) {
+    var meta = item.get('meta');
+    if (!meta) {
+      return;
+    }
+    article.metas.push({
+      mid: meta.get('mid'),
+      name: meta.get('name')
+    });
+  });
+  article.user = {
+    uid: data.get('user').get('uid'),
+    screenName: data.get('user').get('screenName')
+  };
+  return article;
 }
+
+//Get all articles only contain title, tags and modified date;
+GetManager.prototype.getArticleList = function(callback) {
+  var self = this;
+  var sqlData = {};
+  sqlData.attributes = [
+    'cid',
+    'title',
+    'created',
+    'modified',
+  ];
+  sqlData.include = [{
+    model: models.relationships,
+    include: [{
+      model: models.metas,
+      require: true
+    }]
+  }, {
+    model: models.users
+  }];
+  co(function*() {
+    var articles = [];
+    var contents;
+    try {
+      contents = yield self.db.contents.get(sqlData);
+      contents.forEach(function(item){
+        articles.push(formatArticle(item, true));
+      });
+    } catch (err) {
+      throw err;
+    }
+    return articles;
+  }).then(function(result) {
+    callback(null, result);
+  }, function(err) {
+    callback(err);
+  });
+};
 
 GetManager.prototype.getTag = function(mid, callback) {
   var sqlData = {
@@ -83,9 +133,11 @@ GetManager.prototype.getTag = function(mid, callback) {
   });
 };
 
-exports.getInstance = function(db, redis) {
-  if (managerInstance === null) {
-    managerInstance = new GetManager(db, redis);
-  }
-  return managerInstance;
+module.exports = function() {
+  return function(db, redis) {
+    if (managerInstance === null) {
+      managerInstance = new GetManager(db, redis);
+    }
+    return managerInstance;
+  };
 };

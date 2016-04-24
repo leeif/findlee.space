@@ -85,9 +85,11 @@ PutManager.prototype.articleUpdate = function(article, callback) {
   }
 };
 
-exports.getInstance = function(db, redis) {
-  if (managerInstance === null) {
-    managerInstance = new PutManager(db, redis);
-  }
-  return managerInstance;
+module.exports = function() {
+  return function(db, redis) {
+    if (managerInstance === null) {
+      managerInstance = new PutManager(db, redis);
+    }
+    return managerInstance;
+  };
 };

@@ -1,5 +1,4 @@
 var express = require('express');
-var mysql = require('mysql');
 var redis = require('redis');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -13,51 +12,24 @@ var requireLogin = require('./middlewares/RequireLogin');
 var http = require('http');
 var debug = require('debug')('findlee.space:server');
 var routes = require('./routers');
-var config = require('./config/Config');
-var WsServer = require('./websocket/WsServer');
+var db = require('./models');
 var app = express();
 var server = http.createServer(app);
+var env = process.env.NODE_ENV || 'development';
 var wsServer;
-var sess;
+var redis;
 
-// create connection of database
-var db = mysql.createPool({
-  host: config.db.host,
-  user: config.db.user,
-  password: config.db.password,
-  database: config.db.database,
-  connectionLimit: config.db.connectionLimit,
-  debug: config.db.debug
-});
+var config = require('./config/config')[env];
 
-
-var redis = redis.createClient({
-  host: config.redis.host,
-  port: config.redis.port,
-});
-
-if (!db || !redis) {
-  process.exit(1);
-}
-
-redis.auth(config.redis.password, function(err) {
-  if (err) {
-    process.exit(1);
-    console.error("redis auth failed");
-  }
-});
-
-app.set('domain', process.argv[2] === 'pro' ? config.app.proDomain :
-  config.app.devDomain);
-app.set('port', process.argv[2] === 'pro' ? config.app.proPort :
-  config.app.devPort);
-app.set('env', process.argv[2]);
+app.set('env', env);
+app.set('host', config.host);
+app.set('port',config.port);
 app.enable('trust proxy');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
 
+app.engine('html', require('ejs').renderFile);
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -65,8 +37,14 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(cookieParser());
-sess = config.session(app.get('domain'));
-app.use(session(sess));
+app.use(session({
+  secret: 'findlee.space',
+    resave: config.session.resave,
+    cookie: {
+      maxAge: config.session.maxAge,
+      domain: config.session.domain
+    }
+}));
 app.use(express.static(path.join(__dirname, 'public/')));
 //middlewares that attach db  connection to request object
 app.use(attachDB(db));
@@ -88,7 +66,7 @@ app.use(function(req, res, next) {
 
 // development error handler
 // will print stacktrace
-if (app.get('env') === 'dev') {
+if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
@@ -129,8 +107,6 @@ function normalizePort(val) {
 }
 
 //websocket
-wsServer = new WsServer(server, db, redis);
-wsServer.startBackgroundWork(config.ws.interval);
 
 //httpserver
 server.listen(app.get('port'));

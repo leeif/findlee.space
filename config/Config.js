@@ -1,50 +1,43 @@
-/**
- * database config
- * @type {Object}
- */
-exports.db = {
-  //database
-  host: 'localhost',
-  user: 'root',
-  password: 'w19920610',
-  database: 'gctw',
-  connectionLimit: 10,
-  debug: false
-};
+module.exports = {
 
-exports.redis = {
-  host: 'localhost',
-  port: 6379,
-  password: 'w19920610'
-};
-
-/**
- * websocket config
- * @type {Object}
- */
-exports.ws = {
-  interval: 5000,
-  minDistance: 500
-};
-
-/**
- * app config
- * @type {Object}
- */
-exports.app = {
-  devDomain: 'localhost',
-  proDomain: 'findlee.space',
-  devPort: 8080,
-  proPort: 3000
-};
-
-exports.session = function(domain) {
-  return {
-    secret: 'findlee.space',
-    resave: false,
-    cookie: {
-      maxAge: 3600000,
-      domain: domain
+  development: {
+    username: "root",
+    password: "w19920610",
+    database: "gctw",
+    host: "127.0.0.1",
+    dialect: "mysql",
+    define: {
+      timestamps: false
+    },
+    port: "8080",
+    redis: {},
+    websocket: {},
+    session: {
+      resave: true,
+      maxAge: 360000,
+      domain: "localhost"
     }
-  };
+  },
+  test: {
+    username: "root",
+    password: "w19920610",
+    database: "findlee_test",
+    host: "127.0.0.1",
+    dialect: "mysql",
+    define: {
+      timestamps: false
+    },
+    port: "8080",
+  },
+  production: {
+    username: "root",
+    password: null,
+    database: "database_production",
+    host: "127.0.0.1",
+    dialect: "mysql",
+    define: {
+      timestamps: false
+    },
+    port: "3030",
+  }
 };

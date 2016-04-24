@@ -39,11 +39,11 @@ DeleteManager.prototype.deleteRelationship = function(relationships, callback) {
       throw err;
     }
     return result;
-  }).then(function(result){
+  }).then(function(result) {
     callback(null, {
       status: 200
     });
-  }, function(err){
+  }, function(err) {
     console.log(err);
     callback({
       status: 500
@@ -51,9 +51,11 @@ DeleteManager.prototype.deleteRelationship = function(relationships, callback) {
   });
 };
 
-exports.getInstance = function(db, redis) {
-  if (managerInstance === null) {
-    managerInstance = new DeleteManager(db, redis);
-  }
-  return managerInstance;
+module.exports = function() {
+  return function(db, redis) {
+    if (managerInstance === null) {
+      managerInstance = new DeleteManager(db, redis);
+    }
+    return managerInstance;
+  };
 };

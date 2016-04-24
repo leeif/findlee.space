@@ -1,7 +1,7 @@
-start: install install-database
+start-pro: install
 	forever start app.js pro
 	
-start-dev: install-dev install-database
+start-dev: install-dev
 	node app.js dev
 
 install:
@@ -12,6 +12,11 @@ install-dev:
 	npm install
 	bower install
 
-install-database:
-	node application/InstallDatabase.js
+migration-test:
+	node_modules/.bin/sequelize db:migrate --env test
 
+.PHONY: test
+
+test:
+	# NODE_ENV=test node ./test/modelsWrapperTest.js
+	NODE_ENV=test node ./test/managerTest.js

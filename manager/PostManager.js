@@ -182,9 +182,11 @@ PostManager.prototype.blogLogin = function(user, callback) {
   });
 };
 
-exports.getInstance = function(db, redis) {
-  if (managerInstance === null) {
-    managerInstance = new PostManager(db, redis);
-  }
-  return managerInstance;
+module.exports = function() {
+  return function(db, redis) {
+    if (managerInstance === null) {
+      managerInstance = new PostManager(db, redis);
+    }
+    return managerInstance;
+  };
 };
