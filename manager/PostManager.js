@@ -11,175 +11,155 @@ util.inherits(PostManager, Base);
 
 
 PostManager.prototype.addTag = function(tag, callback) {
-  var sqlData = {
-    actionType: 'insert',
-    sql: 'insert into metas(name, count) select ' +
-      this.sqlEscape(tag.name) +
-      ',0 from dual where not exists (select * from metas where name = ' +
-      this.sqlEscape(tag.name) +
-      ');'
-  };
-  // var dBExecute = gctwUtils.promisify(this.dBHelper, this.dBHelper.execute);
-  this.dBExecute(sqlData).then(function(result) {
-    if (result.insertId === 0) {
-      callback({
-        errMSG: 'duplicated'
-      });
-    } else {
-      callback(null, result);
-    }
-  }, function(err) {
-    callback({
-      errMSG: err
-    });
-  });
-};
-
-PostManager.prototype.addRelationship = function(relationship, callback) {
-  var queryResult;
-  var insertResult;
   var self = this;
+  var sqlData = {};
+  sqlData.where = [{
+    'name': tag.name
+  }];
+  sqlData.defaults = {
+    'name': tag.name,
+    'count': 0
+  };
   co(function*() {
-    queryResult = yield self.dBExecute({
-      actionType: 'query',
-      sql: 'select * from relationships where cid = ' + relationship.cid +
-        ' and ' +
-        'mid = ' + relationship.mid,
-    });
-    if (queryResult.length > 0) {
-      throw new Error('relationship exist');
+    var result = yield self.db.metas.queryOrInsert(sqlData);
+    if (result[1]) {
+      return {
+        mid: result[0].get('mid'),
+        name: result[0].get('name')
+      };
     } else {
-      insertResult = yield self.dBExecute({
-        actionType: 'insert',
-        sql: 'insert into relationships values (' + relationship.cid + ',' +
-          relationship.mid +
-          ')'
-      });
+      throw new Error('Tag Already Exists');
     }
-  }).then(function(result) {
-    callback(null, {
-      status: 200,
-    });
-  }, function(err) {
-    callback({
-      status: 500
-    });
-  });
-};
-
-PostManager.prototype.articleUpdate = function(article, callback) {
-  var authorId;
-  var queryUser;
-  var insertUser;
-  var updateArticle;
-
-  if (!article.title || !article.author || !article.text) {
-    return callback({
-      status: 500,
-      err: new Error('bad request')
-    });
-  }
-  co(function*() {
-    try {
-      //query user
-      queryUser = yield this.dBExecute({
-        actionType: 'query',
-        sql: 'select * from users where screenName = ' + article.author
-      });
-
-      if (queryUser.length > 0) {
-        authorId = queryUser[0].uid;
-      } else {
-        //insert author(user table)
-        insertUser = yield this.dBExecute({
-          actionType: 'insert',
-          sql: 'insert into users(screenName) values (' + article.name + ')'
-        });
-        authorId = insertUser.insertId;
-      }
-
-      //update blog(content table)
-      updateArticle = yield this.dBExecute({
-        actionType: 'update',
-        sql: 'update content set title = ' + article.title + ',' +
-          'authorId = ' + authorId + ',' +
-          'text = ' + article.text + ' ' +
-          'where cid = ' + article.cid
-      });
-
-    } catch (err) {
-      throw err;
-    }
-    return updateArticle;
   }).then(function(result) {
     onSuccess(result);
   }, function(err) {
+    console.log(err);
     onError(err);
   });
 
   function onError(err) {
     callback({
       status: 500,
-      error: err.message,
+      error: err.msg,
     });
   }
 
-  function onSuccess() {
+  function onSuccess(result) {
     callback(null, {
       status: 200,
+      mid: result.mid,
+      name: result.name,
     });
   }
 };
 
-PostManager.prototype.publish = function(article, callback) {
-  var sqlData = {
-    table: 'contents',
-    actionType: 'insert',
-    insertColumns: ['title', 'discription', 'created', 'modified', 'text'],
-    insertData: [
-      article.title,
-      article.discription,
-      article.created,
-      article.modified,
-      article.text
-    ]
-  };
-  this.dBExecute(sqlData).then(function(result) {
-    callback(null, result);
-  }, function(err) {
-    callback(err);
-  });
-};
-
-PostManager.prototype.blogLogin = function(user, callback) {
+PostManager.prototype.publishArticle = function(article, callback) {
   var self = this;
-  var queryResult;
-  var sql = user.account.indexOf('@') > -1 ?
-    'select * from users where mail = ' + this.sqlEscape(user.account) :
-    'select * from users where name = ' + this.sqlEscape(user.account);
+  var content;
   co(function*() {
     try {
-      queryResult = yield self.dBExecute({
-        actionType: 'query',
-        sql: sql
+      var user = yield self.db.users.queryOrInsert({
+        where: {
+          screenName: article.author,
+        },
+        default: {
+          name: article.author,
+          screenName: article.author,
+        }
       });
-      queryResult = queryResult[0];
-      if (queryResult.length !== 0 && queryResult.password === user.password) {
-        return queryResult.uid;
-      } else {
-        throw new Error('Login Failed');
-      }
+      content = yield self.db.contents.insert({
+        title: article.title,
+        text: article.text,
+        created: article.created,
+        modified: article.modified,
+        authorId: user[0].get('uid'),
+        type: article.type || null,
+        discription: article.discription || null
+      });
+      article.relationships.forEach(function(item) {
+        item.cid = content.get('cid');
+      });
+      yield self.db.relationships.bulkInsert(article.relationships);
     } catch (err) {
       throw err;
     }
+    return {
+      redirect: '/blog/article/' + content.get('cid')
+    };
   }).then(function(result) {
-    callback(null, result);
+    onSuccess(result);
   }, function(err) {
+    console.log(err);
+    onError(err);
+  });
+
+  function onError(err) {
     callback({
       status: 500,
-      err: err.message
+      error: err.msg,
     });
+  }
+
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      redirect: result.redirect
+    });
+  }
+};
+
+PostManager.prototype.login = function(user, callback) {
+  var self = this;
+  var redirect = user.redirect || '/blog';
+  var sqlData = {};
+  if (user.account.indexOf('@') != -1) {
+    sqlData.where = {
+      mail: user.account,
+    };
+  } else {
+    sqlData.where = {
+      name: user.account,
+    };
+  }
+  co(function*() {
+    try {
+      var user = yield self.db.users.query(sqlData);
+      if (user[0].get('password') == user.password) {
+        return {
+          uid: user[0].get('uid'),
+          type: user[0].get('type') || 'normal',
+          redirect: redirect
+        };
+      } else {
+        throw 'Login Failed';
+      }
+    } catch (err) {
+      throw {
+        err: err
+      };
+    }
+  }).then(function(result) {
+    onSuccess(result);
+  }, function(err) {
+    console.log(err);
+    onError(err);
   });
+
+  function onError(err) {
+    callback({
+      status: 500,
+      error: err.msg,
+    });
+  }
+
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      uid: result.uid,
+      type: result.type,
+      redirect: result.redirect
+    });
+  }
 };
 
 module.exports = function() {

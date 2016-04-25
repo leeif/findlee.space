@@ -3,24 +3,20 @@ function ContentsWrapper() {
   this.contents = db.contents;
 }
 
-ContentsWrapper.prototype.get = function(option) {
+ContentsWrapper.prototype.query = function(option) {
   return this.contents.findAll(option);
 };
 
-ContentsWrapper.prototype.save = function(model) {
-  return this.contents.build(model).then(function(content){
-    content.save();
-  });
+ContentsWrapper.prototype.insert = function(model) {
+  return this.contents.create(model);
 };
 
-ContentsWrapper.prototype.update = function(model) {
-  return this.contents.build(model).then(function(){
-
-  });
+ContentsWrapper.prototype.update = function(attributes, where) {
+   return this.contents.update(attributes, where);
 };
 
-ContentsWrapper.prototype.delete = function(cid) {
-
+ContentsWrapper.prototype.delete = function(option) {
+  return this.contents.destroy(option);
 };
 
 module.exports = function() {

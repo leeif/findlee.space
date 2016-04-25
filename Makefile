@@ -1,8 +1,11 @@
 start-pro: install
-	forever start app.js pro
+	NODE_ENV=production forever start app.js pro
 	
 start-dev: install-dev
-	node app.js dev
+	NODE_ENV=development node app.js
+
+start-test: install-dev
+	NODE_ENV=test node app.js
 
 install:
 	npm install --producation

@@ -12,14 +12,14 @@ var requireLogin = require('./middlewares/RequireLogin');
 var http = require('http');
 var debug = require('debug')('findlee.space:server');
 var routes = require('./routers');
-var db = require('./models');
+var db = require('./modelsWrapper');
 var app = express();
 var server = http.createServer(app);
 var env = process.env.NODE_ENV || 'development';
 var wsServer;
 var redis;
 
-var config = require('./config/config')[env];
+var config = require('./config/app')[env];
 
 app.set('env', env);
 app.set('host', config.host);

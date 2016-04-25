@@ -31,17 +31,31 @@ GetManager.prototype.getArticle = function(cid, callback) {
     var article;
     var contents;
     try {
-      contents = yield self.db.contents.get(sqlData);
+      contents = yield self.db.contents.query(sqlData);
       article = formatArticle(contents[0], false);
     } catch (err) {
       throw err;
     }
     return article;
   }).then(function(result) {
-    callback(null, result);
+    onSuccess(result);
   }, function(err) {
-    callback(err);
+    onError(err);
   });
+
+  function onError(err) {
+    callback({
+      status: 500,
+      error: err.msg,
+    });
+  }
+
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      article: result
+    });
+  }
 };
 
 function formatArticle(data, isList) {
@@ -81,9 +95,10 @@ function formatArticle(data, isList) {
 }
 
 //Get all articles only contain title, tags and modified date;
-GetManager.prototype.getArticleList = function(callback) {
+GetManager.prototype.getArticles = function(callback) {
   var self = this;
   var sqlData = {};
+  var articles = [];
   sqlData.attributes = [
     'cid',
     'title',
@@ -100,10 +115,9 @@ GetManager.prototype.getArticleList = function(callback) {
     model: models.users
   }];
   co(function*() {
-    var articles = [];
     var contents;
     try {
-      contents = yield self.db.contents.get(sqlData);
+      contents = yield self.db.contents.query(sqlData);
       contents.forEach(function(item){
         articles.push(formatArticle(item, true));
       });
@@ -112,25 +126,68 @@ GetManager.prototype.getArticleList = function(callback) {
     }
     return articles;
   }).then(function(result) {
-    callback(null, result);
+    onSuccess(result);
   }, function(err) {
-    callback(err);
+    onError(err);
   });
+
+  function onError(err) {
+    console.log(err);
+    callback({
+      status: 500,
+      error: err.msg,
+    });
+  }
+
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      articles: result
+    });
+  }
 };
 
-GetManager.prototype.getTag = function(mid, callback) {
-  var sqlData = {
-    table: 'metas',
-    actionType: 'query',
-    resultColumns: ['mid', 'name'],
-    queryColumns: mid ? ['mid'] : null,
-    queryData: mid ? [mid] : null,
-  };
-  this.dBExecute(sqlData).then(function(result) {
-    callback(null, mid ? result[0] : result);
-  }, function(err) {
-    callback(err);
+GetManager.prototype.getTags = function(mid, callback) {
+  var self = this;
+  var sqlData = {};
+  if(mid){
+    sqlData.where = [{
+      'mid': mid
+    }];
+  }
+  sqlData.attributes = ['mid', 'name'];
+  sqlData.order = ['count'];
+  var tags=[];
+  co(function*(){
+    try{
+      var metas = yield self.db.metas.query(sqlData);
+      metas.forEach(function(item){
+        tags.push(item.get());
+      });
+      return tags;
+    }catch(err){
+      throw err;
+    }
+  }).then(function(result){
+    onSuccess(result);
+  },function(err){
+    console.log(err);
+    onError(err);
   });
+
+  function onError(err) {
+    callback({
+      status: 500,
+      error: err.msg,
+    });
+  }
+
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      tags: result
+    });
+  }
 };
 
 module.exports = function() {
