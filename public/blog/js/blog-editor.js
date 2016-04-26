@@ -120,9 +120,12 @@ Editor.prototype.publish = function() {
   var data = {
     title: this.article.title,
     text: this.article.text,
+    author: this.article.author,
     created: Date.now() / 1000,
-    modified: Date.now() / 1000
+    modified: Date.now() / 1000,
+    relationships: this.article.metas
   };
+  console.log(data);
   $.ajax({
     url: 'http://' + window.location.host + '/blog/api/article/publish',
     method: 'post',
@@ -131,8 +134,7 @@ Editor.prototype.publish = function() {
     dataType: 'json'
   }).done(function(data) {
     console.log(data);
-    var url = 'http://' + window.location.host + '/blog/article/' + data.cid;
-    window.location.href = url;
+    window.location.href = data.redirect;
   }).fail(function() {
     console.log('failed');
   });
@@ -174,6 +176,7 @@ Editor.prototype.loadArctile = function() {
     dataType: 'json'
   }).done(function(data) {
     self.article = data;
+    console.log(self.article);
     self.setView();
   }).fail(function() {
     console.log('failed');
@@ -204,6 +207,15 @@ Editor.prototype.appendTagDropDown = function(data) {
       '</span>');
     $('#tags-dropdown').append(jqObj);
     jqObj.click(function() {
+      if (self.option.type === 'write') {
+        if (!self.article.metas) {
+          self.article.metas = [];
+        }
+        console.log(item);
+        self.article.metas.push(item);
+        self.setTagView(self.article.metas, self.article.metas.length - 1, self.option.tagInput);
+        return;
+      }
       self.addRelationship(item.mid, function(err, data) {
         if (err) {
           alert('add relationship failed');
@@ -235,6 +247,11 @@ Editor.prototype.setTagView = function(metas, i, element) {
     '<span class="fa fa-times"></span>' +
     '</span>');
   jqObj.find('.fa-times').click(function() {
+    if(self.option.type === 'write'){
+      jqObj.remove();
+      metas.splice(i, 1);
+      return;
+    }
     self.deleteRelationship(metas[i].mid, function(err) {
       if (err) {
         alert('delete failed');

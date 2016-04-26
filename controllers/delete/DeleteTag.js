@@ -1,6 +1,6 @@
 var util = require('util');
 var Base = require('../BaseController');
-var Manager = require('../../manager/DeleteManager');
+var Manager = require('../../manager');
 
 function DeleteTag() {
   Base.call(this);
@@ -11,15 +11,13 @@ util.inherits(DeleteTag, Base);
 DeleteTag.prototype.run = function(req, res, next) {
   DeleteTag.super_.prototype.run.call(this, req, res);
   var mid = req.body.mid;
-  var manager = Manager.getInstance(req.db, req.redis);
-  var statusCode;
-  manager.deleteTag(mid, function(err, result) {
+  Manager.Delete(req.db).deleteTag(mid, function(err, result) {
+    console.log(err);
     if (err) {
-      statusCode = 500;
+      res.status(500).json(err);
     } else {
-      statusCode = 200;
+      res.status(200).json(result);
     }
-    res.status(statusCode).json(result);
   });
 };
 

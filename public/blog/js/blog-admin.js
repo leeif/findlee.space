@@ -7,7 +7,7 @@
   Admin.prototype.loadArticle = function() {
     var self = this;
     $.ajax({
-      url: 'http://' + window.location.host + '/blog/api/article/get',
+      url: 'http://' + window.location.host + '/blog/api/articles/get',
       method: 'get',
       dataType: 'json'
     }).done(function(data) {

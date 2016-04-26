@@ -32,6 +32,7 @@ GetManager.prototype.getArticle = function(cid, callback) {
     var contents;
     try {
       contents = yield self.db.contents.query(sqlData);
+  
       article = formatArticle(contents[0], false);
     } catch (err) {
       throw err;
@@ -40,6 +41,7 @@ GetManager.prototype.getArticle = function(cid, callback) {
   }).then(function(result) {
     onSuccess(result);
   }, function(err) {
+    console.log(err);
     onError(err);
   });
 

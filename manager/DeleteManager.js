@@ -10,45 +10,70 @@ function DeleteManager(db, redis) {
 util.inherits(DeleteManager, Base);
 
 DeleteManager.prototype.deleteTag = function(mid, callback) {
-  var sqlData = {
-    sql: 'delete from metas, relationships ' +
-      'using metas left join relationships on relationships.mid = metas.mid where metas.mid = ' +
-      mid,
-    actionType: 'delete',
-  };
-  this.dBExecute(sqlData).then(function(result) {
-    console.log(result);
-    callback(null, result);
-  }, function(err) {
-    console.log(err);
-    callback(err);
-  });
-};
-
-DeleteManager.prototype.deleteRelationship = function(relationships, callback) {
   var self = this;
-  var result;
+  var sqlData = {};
+  sqlData.where = {
+    mid: mid
+  };
   co(function*() {
     try {
-      result = yield self.dBExecute({
-        sql: 'delete from relationships where cid = ' + relationships.cid + ' and ' +
-          'mid = ' + relationships.mid,
-        actionType: 'delete'
-      });
+      yield self.db.metas.delete(sqlData);
+      return;
     } catch (err) {
       throw err;
     }
-    return result;
   }).then(function(result) {
+    onSuccess(result);
+  }, function(err) {
+    console.log(err);
+    onError(err);
+  });
+  function onError(err) {
+    callback({
+      status: 500,
+      err: err.msg
+    });
+  }
+  
+  function onSuccess(result) {
     callback(null, {
       status: 200
     });
+  }
+};
+
+DeleteManager.prototype.deleteRelationship = function(relationship, callback) {
+  var self = this;
+  var sqlData = {};
+  sqlData.where = {
+    cid: relationship.cid,
+    mid: relationship.mid
+  };
+  co(function*() {
+    try {
+      yield self.db.relationships.delete(sqlData);
+      return;
+    } catch (err) {
+      throw err;
+    }
+  }).then(function(result) {
+    onSuccess(result);
   }, function(err) {
     console.log(err);
-    callback({
-      status: 500
-    });
+    onError(err);
   });
+  function onError(err) {
+    callback({
+      status: 500,
+      err: err.msg
+    });
+  }
+  
+  function onSuccess(result) {
+    callback(null, {
+      status: 200
+    });
+  }
 };
 
 module.exports = function() {

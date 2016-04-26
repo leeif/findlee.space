@@ -47,8 +47,53 @@ PostManager.prototype.addTag = function(tag, callback) {
   function onSuccess(result) {
     callback(null, {
       status: 200,
-      mid: result.mid,
-      name: result.name,
+      tag: result
+    });
+  }
+};
+
+PostManager.prototype.addRelationship = function(relationship, callback) {
+  var self = this;
+  var sqlData = {};
+  sqlData.where = {
+    cid: relationship.cid,
+    mid: relationship.mid
+  };
+  sqlData.defaults = {
+    cid: relationship.cid,
+    mid:  relationship.mid
+  };
+  co(function*() {
+    try {
+      var relationship = yield self.db.relationships.queryOrInsert(sqlData);
+      if(relationship[1]){
+        return {
+          cid: relationship[0].get('mid'),
+          mid: relationship[0].get('cid')
+        };
+      }else{
+        throw new Error('Relationship Already Exits');
+      }
+    } catch (err) {
+      throw err;
+    }
+  }).then(function(result) {
+    onSuccess(result);
+  }, function(err) {
+    console.log(err);
+    onError(err);
+  });
+  function onError(err) {
+    callback({
+      status: 500,
+      err: err.msg,
+    });
+  }
+  
+  function onSuccess(result) {
+    callback(null, {
+      status: 200,
+      relationship: result
     });
   }
 };
@@ -124,9 +169,10 @@ PostManager.prototype.login = function(user, callback) {
   co(function*() {
     try {
       var user = yield self.db.users.query(sqlData);
-      if (user[0].get('password') == user.password) {
+      if (user[0] && user[0].get('password') == user.password) {
         return {
           uid: user[0].get('uid'),
+          screenName: user[0].get('screenName'),
           type: user[0].get('type') || 'normal',
           redirect: redirect
         };

@@ -12,6 +12,7 @@ var BlogEdit = require('./controllers/pages/BlogEdit');
 var BlogLoginPage = require('./controllers/pages/BlogLogin');
 
 var GetTag = require('./controllers/get/GetTag');
+var GetArticles = require('./controllers/get/GetArticles');
 var GetArticle = require('./controllers/get/GetArticle');
 
 var BlogPublish = require('./controllers/post/BlogPublish');
@@ -71,6 +72,11 @@ router.get('/blog/api/tag/get', function(req, res, next) {
 router.get('/blog/api/article/get', function(req, res, next) {
   var getArticle = new GetArticle();
   getArticle.run(req, res, next);
+});
+
+router.get('/blog/api/articles/get', function(req, res, next) {
+  var getArticles = new GetArticles();
+  getArticles.run(req, res, next);
 });
 
 //post

@@ -1,6 +1,6 @@
 var util = require('util');
 var Base = require('../BaseController');
-var Manager = require('../../manager/PostManager');
+var Manager = require('../../manager');
 
 function AddTag() {
   Base.call(this);
@@ -9,18 +9,12 @@ function AddTag() {
 util.inherits(AddTag, Base);
 
 AddTag.prototype.run = function(req, res, next) {
-  var manager = Manager.getInstance(req.db, req.redis);
-  var statusCode;
   AddTag.super_.prototype.run.call(this, req, res);
-  manager.addTag(req.body, function(err, result) {
+  Manager.Post(req.db).addTag(req.body, function(err, result) {
     if (err) {
-      statusCode = 500;
-      res.status(statusCode).json(err);
+      res.status(500).json(err);
     } else {
-      statusCode = 200;
-      res.status(statusCode).json({
-        mid: result.insertId
-      });
+      res.status(200).json(result.tag);
     }
   });
 };

@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= blog.title %></title>
+  <title><%= article.title %></title>
   <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
 </head>
 
@@ -14,10 +14,10 @@
   <!-- article -->
   <article class="article">
     <section class="title row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
-      <h3 class="columns"><%= blog.title %></h3>
+      <h3 class="columns"><%= article.title %></h3>
       <div class="columns">
         <ul>
-          <% blog.metas.forEach(function(tag){ %>
+          <% article.metas.forEach(function(tag){ %>
             <li class="tag">
               <%= tag.name %>
             </li>
@@ -32,7 +32,9 @@
     <div class="body">
       <section class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
         <div class="blog-display column large-8" id="blog-display">
-          <%- blog.formatMark.text %>
+        <% if(article.html) {%>
+          <%- article.html.text %>
+        <% } %>
         </div>
         <div class="side-menu large-4 columns">
           <nav class="columns float-panel">
@@ -50,7 +52,9 @@
                 </ul>
                 <% } %>
               <% } %>
-            <% showTitle(blog.formatMark.title) %>
+            <% if(article.html) {%>
+              <% showTitle(article.html.title) %>
+            <% } %>
           </nav>
         </div>
       </section>

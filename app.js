@@ -16,10 +16,9 @@ var db = require('./modelsWrapper');
 var app = express();
 var server = http.createServer(app);
 var env = process.env.NODE_ENV || 'development';
-var wsServer;
 var redis;
 
-var config = require('./config/app')[env];
+var config = require('./config/AppConfig')[env];
 
 app.set('env', env);
 app.set('host', config.host);
@@ -52,7 +51,9 @@ app.use(attachDB(db));
 app.use(attachRedis(redis));
 
 // register router in app.
-app.use(['/blog/admin(?!/login$)*'], requireLogin());
+if(app.get('env') !== 'test'){
+  app.use(['/blog/admin(?!/login$)*'], requireLogin());
+}
 app.use('/', routes);
 
 // catch 404 and forward to error handler
