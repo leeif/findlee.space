@@ -95,7 +95,7 @@ function formatArticle(data, isList) {
 }
 
 //Get all articles only contain title, tags and modified date;
-GetManager.prototype.getArticles = function(callback) {
+GetManager.prototype.getArticles = function(pageIndex, callback) {
   var self = this;
   var sqlData = {};
   var articles = [];
@@ -103,6 +103,7 @@ GetManager.prototype.getArticles = function(callback) {
     'cid',
     'title',
     'created',
+    'authorId',
     'modified',
   ];
   sqlData.include = [{
@@ -114,6 +115,9 @@ GetManager.prototype.getArticles = function(callback) {
   }, {
     model: models.users
   }];
+  sqlData.limit = 10;
+  sqlData.offset = pageIndex? (pageIndex-1)*10 : 0;
+  sqlData.order = [['modified'], ['cid', 'DESC']];
   co(function*() {
     var contents;
     try {

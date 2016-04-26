@@ -5,10 +5,10 @@ var db = require('../modelsWrapper');
 //   console.log(err);
 // });
 
-// manager.Get(db).getArticleList(function(err, result){
-//   console.log(result);
-//   console.log(err);
-// });
+manager.Get(db).getArticles(function(err, result){
+  console.log(result);
+  console.log(err);
+});
 
 // manager.Get(db).getTags(2, function(err, result){
 //   console.log(err);
@@ -35,14 +35,14 @@ var db = require('../modelsWrapper');
 //   console.log(result);
 // });
 
-manager.Put(db).updateArticle({
-  cid: 10,
-  title: 'update',
-  text: 'asdasdasdas',
-  created: 123123123,
-  modified: 123123123,
-  author: 'liyifan',
-}, function(err, result){
- console.log(err);
- console.log(result);
-});
+// manager.Put(db).updateArticle({
+//   cid: 10,
+//   title: 'update',
+//   text: 'asdasdasdas',
+//   created: 123123123,
+//   modified: 123123123,
+//   author: 'liyifan',
+// }, function(err, result){
+//  console.log(err);
+//  console.log(result);
+// });

@@ -10,7 +10,7 @@ util.inherits(BlogIndex, Base);
 
 BlogIndex.prototype.run = function(req, res, next) {
   BlogIndex.super_.prototype.run.call(this, req, res);
-  Manager.Get(req.db).getArticles(function(err, result) {
+  Manager.Get(req.db).getArticles(req.pageIndex, function(err, result) {
     if (err) {
       next(err);
     } else {
