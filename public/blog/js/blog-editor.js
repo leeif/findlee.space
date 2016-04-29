@@ -1,5 +1,8 @@
 function Editor(option) {
-  this.article = {};
+  this.article = {
+    user: {},
+    metas: []
+  };
   this.option = option;
   this.tagsDropDownLoaded = false;
   this.init();
@@ -50,7 +53,7 @@ Editor.prototype.setTextListener = function() {
     //update preview
     self.option.preview.html(marked(self.option.text.val()));
     //update article object
-    self.article.text = self.option.text.val();
+    self.article.markdown = self.option.text.val();
   });
 };
 
@@ -65,7 +68,7 @@ Editor.prototype.setAuthorListener = function() {
   var self = this;
   this.option.author.bind('input propertychange', function() {
     //update article object
-    self.article.author = self.option.author.val();
+    self.article.user.screenName = self.option.author.val();
   });
 };
 
@@ -119,8 +122,8 @@ Editor.prototype.addRelationship = function(mid, callback) {
 Editor.prototype.publish = function() {
   var data = {
     title: this.article.title,
-    text: this.article.text,
-    author: this.article.author,
+    text: this.article.markdown,
+    author: this.article.user.screenName,
     created: Date.now() / 1000,
     modified: Date.now() / 1000,
     relationships: this.article.metas
@@ -144,8 +147,8 @@ Editor.prototype.update = function() {
   var data = {
     cid: this.article.cid,
     title: this.article.title,
-    author: this.article.author,
-    text: this.article.text,
+    author: this.article.user.screenName,
+    text: this.article.markdown,
     modified: Date.now() / 1000
   };
   console.log(data);
@@ -157,10 +160,8 @@ Editor.prototype.update = function() {
     dataType: 'json'
   }).done(function(result) {
     console.log(result);
-    if (result.redirectURL) {
-      var url = 'http://' + window.location.host + result.redirectURL;
-      console.log(url);
-      window.location.href = url;
+    if (result.redirect) {
+      window.location.href = result.redirect;
     }
   }).fail(function(err) {
     console.log(err);
@@ -232,8 +233,8 @@ Editor.prototype.appendTagDropDown = function(data) {
 Editor.prototype.setView = function() {
   var i = 0;
   this.option.title.val(this.article.title);
-  this.option.author.val(this.article.author);
-  this.option.text.val(this.article.text);
+  this.option.author.val(this.article.user.screenName);
+  this.option.text.val(this.article.markdown);
   for (i = 0; i < this.article.metas.length; i++) {
     this.setTagView(this.article.metas, i, this.option.tagInput);
   }

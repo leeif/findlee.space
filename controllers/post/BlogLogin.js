@@ -10,7 +10,7 @@ util.inherits(BlogLogin, Base);
 
 BlogLogin.prototype.run = function(req, res, next) {
   BlogLogin.super_.prototype.run.call(this, req, res);
-  Manager.db(req.db).login(req.body, function(err, result) {
+  Manager.Post(req.db).login(req.body, function(err, result) {
     if (err) {
       res.status(500).json(err);
     } else {

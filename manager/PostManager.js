@@ -155,6 +155,7 @@ PostManager.prototype.publishArticle = function(article, callback) {
 
 PostManager.prototype.login = function(user, callback) {
   var self = this;
+  console.log(user);
   var redirect = user.redirect || '/blog';
   var sqlData = {};
   if (user.account.indexOf('@') != -1) {
@@ -169,7 +170,7 @@ PostManager.prototype.login = function(user, callback) {
   co(function*() {
     try {
       var user = yield self.db.users.query(sqlData);
-      if (user[0] && user[0].get('password') == user.password) {
+      if (user.length !== 0 && user[0].get('password`') === user.password) {
         return {
           uid: user[0].get('uid'),
           screenName: user[0].get('screenName'),
@@ -177,12 +178,10 @@ PostManager.prototype.login = function(user, callback) {
           redirect: redirect
         };
       } else {
-        throw 'Login Failed';
+        throw new Error('Login Failed');
       }
     } catch (err) {
-      throw {
-        err: err
-      };
+      throw err;
     }
   }).then(function(result) {
     onSuccess(result);
@@ -194,7 +193,7 @@ PostManager.prototype.login = function(user, callback) {
   function onError(err) {
     callback({
       status: 500,
-      error: err.msg,
+      err: err.msg,
     });
   }
 
@@ -202,6 +201,7 @@ PostManager.prototype.login = function(user, callback) {
     callback(null, {
       status: 200,
       uid: result.uid,
+      screenName: result.screenName,
       type: result.type,
       redirect: result.redirect
     });

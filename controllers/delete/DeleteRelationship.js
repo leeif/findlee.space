@@ -10,7 +10,7 @@ util.inherits(DeleteRelationship, Base);
 
 DeleteRelationship.prototype.run = function(req, res, next) {
   DeleteRelationship.super_.prototype.run.call(this, req, res);
-  Manager.delete(req.db).deleteRelationship(req.body, function(err, result) {
+  Manager.Delete(req.db).deleteRelationship(req.body, function(err, result) {
     if (err) {
       res.status(500).json(err);
     } else {

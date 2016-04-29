@@ -16,13 +16,13 @@ install-dev:
 	bower install
 
 migration-pro:
-	node_modules/.bin/sequelize db:migrate --env production --config /config/DBConfig
+	node_modules/.bin/sequelize db:migrate --env production --config config/mysql.js
 
 migration-dev:
-	node_modules/.bin/sequelize db:migrate --env development --config /config/DBConfig
+	node_modules/.bin/sequelize db:migrate --env development --config config/mysql.js
 	
 migration-test:
-	node_modules/.bin/sequelize db:migrate --env test --config /config/DBConfig
+	node_modules/.bin/sequelize db:migrate --env test --config config/mysql.js
 
 .PHONY: test
 

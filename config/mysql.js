@@ -3,7 +3,7 @@ module.exports = {
   development: {
     username: "root",
     password: "w19920610",
-    database: "finlee_dev",
+    database: "findlee_dev",
     dialect: "mysql",
     define: {
       timestamps: false

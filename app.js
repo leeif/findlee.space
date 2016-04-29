@@ -18,7 +18,7 @@ var server = http.createServer(app);
 var env = process.env.NODE_ENV || 'development';
 var redis;
 
-var config = require('./config/AppConfig')[env];
+var config = require('./config/app')[env];
 
 app.set('env', env);
 app.set('host', config.host);

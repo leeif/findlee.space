@@ -4830,7 +4830,6 @@ body {
     display: inline-block; }
 
 .article .body {
-  word-break: break-all;
   width: 100%;
   background: #FFFFFF; }
   .article .body .side-menu {
