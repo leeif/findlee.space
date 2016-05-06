@@ -2,7 +2,7 @@ module.exports = {
 
   development: {
     username: "root",
-    password: "w19920610",
+    password: "",
     database: "findlee_dev",
     dialect: "mysql",
     define: {
@@ -12,7 +12,7 @@ module.exports = {
 
   test: {
     username: "root",
-    password: "w19920610",
+    password: "",
     database: "findlee_test",
     host: "127.0.0.1",
     dialect: "mysql",
@@ -23,7 +23,7 @@ module.exports = {
 
   production: {
     username: "root",
-    password: null,
+    password: "w19920610",
     database: "findlee",
     host: "127.0.0.1",
     dialect: "mysql",
