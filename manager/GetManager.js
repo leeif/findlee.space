@@ -72,11 +72,11 @@ function formatArticle(data, isList) {
   }
   article.created = {
     origin: data.get('created'),
-    formated: formater.format(data.get('created'), 'YYYY/MM/DD')
+    formated: formater.format(data.get('created')*1000, 'YYYY/MM/DD')
   };
   article.modified = {
     origin: data.get('modified'),
-    formated: formater.format(data.get('modified'), 'YYYY/MM/DD')
+    formated: formater.format(data.get('modified')*1000, 'YYYY/MM/DD')
   };
   article.metas = [];
   data.get('relationships').forEach(function(item) {
