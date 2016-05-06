@@ -107,9 +107,8 @@ PostManager.prototype.publishArticle = function(article, callback) {
         where: {
           screenName: article.author,
         },
-        default: {
+        defaults: {
           name: article.author,
-          screenName: article.author,
         }
       });
       content = yield self.db.contents.insert({

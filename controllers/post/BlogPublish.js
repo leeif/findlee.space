@@ -10,7 +10,6 @@ util.inherits(BlogPublish, Base);
 
 BlogPublish.prototype.run = function(req, res, next) {
   BlogPublish.super_.prototype.run.call(this, req, res);
-  console.log(req.body);
   Manager.Post(req.db).publishArticle(req.body, function(err, result) {
     if (err) {
       res.status(500).json(err);
