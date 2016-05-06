@@ -2,7 +2,7 @@ module.exports = {
 
   development: {
     username: "root",
-    password: "",
+    password: "w19920610",
     database: "findlee_dev",
     dialect: "mysql",
     define: {

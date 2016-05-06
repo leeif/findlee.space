@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    host: 'localhost',
+    host: 'findlee.space',
     port: 8080,
     websocket: {
 
