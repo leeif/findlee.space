@@ -1,6 +1,6 @@
 module.exports = {
   development: {
-    host: 'findlee.space',
+    host: 'localhost',
     port: 8080,
     websocket: {
 
@@ -8,7 +8,7 @@ module.exports = {
     session: {
       resave: false,
       maxAge: 3600000,
-      domain: "localhost"
+      domain: "findlee.space"
     }
   },
 
@@ -26,7 +26,7 @@ module.exports = {
   },
 
   production: {
-    host: 'findlee.space',
+    host: 'localhost',
     port: 3000,
     websocket: {
 
