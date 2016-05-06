@@ -27,7 +27,7 @@ module.exports = {
 
   production: {
     host: 'findlee.space',
-    port: 8080,
+    port: 3000,
     websocket: {
 
     },
