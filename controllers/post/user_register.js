@@ -4,6 +4,7 @@ var DBHelper = require('../../module/DBHelper');
 
 function UserRegister(){
   Base.call(this);
+  this.name = 'UserRegister';
 }
 
 util.inherits(UserRegister, Base);

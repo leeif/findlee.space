@@ -4,6 +4,7 @@ var Manager = require('../../manager');
 
 function AddTag() {
   Base.call(this);
+  this.name = 'AddTag';
 }
 
 util.inherits(AddTag, Base);

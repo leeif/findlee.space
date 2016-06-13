@@ -1,9 +1,10 @@
 var util = require('util');
-var Base = require('../BaseController');
+var Base = require('../base_controller');
 var Manager = require('../../manager');
 
 function BlogIndex() {
   Base.call(this);
+  this.name = 'BlogIndex';
 }
 
 util.inherits(BlogIndex, Base);

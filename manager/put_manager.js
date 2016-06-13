@@ -1,4 +1,4 @@
-var Base = require('./BaseManager');
+var Base = require('./base_manager');
 var util = require('util');
 var co = require('co');
 var managerInstance = null;
@@ -74,9 +74,7 @@ PutManager.prototype.updateArticle = function(article, callback) {
 
 module.exports = function() {
   return function(db, redis) {
-    if (managerInstance === null) {
-      managerInstance = new PutManager(db, redis);
-    }
+    managerInstance = new PutManager(db, redis);
     return managerInstance;
   };
 };

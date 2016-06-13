@@ -1,4 +1,4 @@
-var Base = require('./BaseManager');
+var Base = require('./base_manager');
 var util = require('util');
 var co = require('co');
 var managerInstance = null;
@@ -78,9 +78,7 @@ DeleteManager.prototype.deleteRelationship = function(relationship, callback) {
 
 module.exports = function() {
   return function(db, redis) {
-    if (managerInstance === null) {
-      managerInstance = new DeleteManager(db, redis);
-    }
+    managerInstance = new DeleteManager(db, redis);
     return managerInstance;
   };
 };

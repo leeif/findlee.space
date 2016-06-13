@@ -4,6 +4,7 @@ var Manager = require('../../manager');
 
 function AddRelationship() {
   Base.call(this);
+  this.name = 'AddRelationship';
 }
 
 util.inherits(AddRelationship, Base);

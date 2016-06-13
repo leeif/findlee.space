@@ -4,6 +4,7 @@ var Manager = require('../../manager');
 
 function BlogLogin() {
   Base.call(this);
+  this.name = 'BlogLogin';
 }
 
 util.inherits(BlogLogin, Base);

@@ -4,6 +4,7 @@ var Manager = require('../../manager');
 
 function GetArticles() {
   Base.call(this);
+  this.name = 'GetArticles';
 }
 
 util.inherits(GetArticles, Base);

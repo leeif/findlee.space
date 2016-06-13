@@ -3,20 +3,18 @@
 var fs = require('fs');
 var path = require('path');
 var basename = path.basename(module.filename);
-var utils = require('../tool/utils');
-var manager = {};
+var controllers = {};
 
 fs.readdirSync(__dirname)
   .filter(function(file) {
     return (file.indexOf('.') !== 0) &&
-      (file !== 'base_manager.js') &&
       (file !== basename) &&
       (file.slice(-3) === '.js');
   })
   .forEach(function(file) {
-    var name = file.split('_manager.js')[0];
-    name = utils.capitalizeFirstLetter(name);
-    manager[name] = require('./' +file)();
+    var Controller = require('./' + file);
+    var controller = new Controller();
+    controllers[controller.name] = controller;
   });
 
-module.exports = manager;
+module.exports = controllers;
