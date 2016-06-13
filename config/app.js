@@ -1,7 +1,7 @@
 module.exports = {
   development: {
     host: 'localhost',
-    port: 8080,
+    port: 8070,
     websocket: {
 
     },
