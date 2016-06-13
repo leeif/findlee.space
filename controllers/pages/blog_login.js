@@ -3,7 +3,7 @@ var Base = require('../base_controller');
 
 function BlogLogin() {
   Base.call(this);
-  this.name = 'BlogIndex';
+  this.name = 'BlogLogin';
 }
 
 util.inherits(BlogLogin, Base);
