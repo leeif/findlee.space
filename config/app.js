@@ -7,8 +7,18 @@ module.exports = {
     },
     session: {
       resave: false,
+<<<<<<< HEAD
       maxAge: 3600000,
       domain: "findlee.space"
+=======
+      maxAge: 3600000*24,
+      domain: "localhost"
+    },
+    redis: {
+      prefix: "findlee_blog",
+      port: 6379,
+      password: 'w19920610'
+>>>>>>> dev
     }
   },
 
@@ -20,8 +30,13 @@ module.exports = {
     },
     session: {
       resave: false,
-      maxAge: 3600000,
+      maxAge: 3600000*24,
       domain: "localhost"
+    },
+    redis: {
+      prefix: "findlee_blog",
+      port: 6379,
+      password: ''
     }
   },
 
@@ -33,8 +48,13 @@ module.exports = {
     },
     session: {
       resave: false,
-      maxAge: 3600000,
+      maxAge: 3600000*24,
       domain: "findlee.space"
+    },
+    redis: {
+      prefix: "findlee_blog",
+      port: 6379,
+      password: 'w19920610'
     }
   }
 };

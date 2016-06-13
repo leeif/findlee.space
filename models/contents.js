@@ -39,6 +39,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(16),
       field: 'type'
     },
+    visitor: {
+      type: DataTypes.INTEGER(10).UNSIGNED,
+      allowNull: false,
+      defaultValue: 0,
+      field: "visitor"
+    }
   }, {
     classMethods: {
       associate: function(models) {

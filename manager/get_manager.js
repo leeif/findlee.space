@@ -1,4 +1,4 @@
-var Base = require('./BaseManager');
+var Base = require('./base_manager');
 var util = require('util');
 var models = require('../models');
 var co = require('co');
@@ -12,7 +12,7 @@ function GetManager(db, redis) {
 
 util.inherits(GetManager, Base);
 
-GetManager.prototype.getArticle = function(cid, callback) {
+GetManager.prototype.getArticle = function(cid, ip, callback) {
   var self = this;
   var sqlData = {};
   sqlData.where = [{
@@ -30,9 +30,17 @@ GetManager.prototype.getArticle = function(cid, callback) {
   co(function*() {
     var article;
     var contents;
+    var lastVisitAt;
+    var now = Date.now();
     try {
-      contents = yield self.db.contents.query(sqlData);
-  
+      lastVisitAt = yield self.redis.visitor.getArticle(cid, ip);
+      contents = yield self.db.contents.query(sqlData); 
+      if((lastVisitAt + 60*60*1000) < now) {
+        yield self.redis.visitor.setArticle(cid, ip, now);
+        yield contents[0].increment({
+          'visitor': 1,
+        });
+      }
       article = formatArticle(contents[0], false);
     } catch (err) {
       throw err;
@@ -198,9 +206,7 @@ GetManager.prototype.getTags = function(mid, callback) {
 
 module.exports = function() {
   return function(db, redis) {
-    if (managerInstance === null) {
-      managerInstance = new GetManager(db, redis);
-    }
+    managerInstance = new GetManager(db, redis);
     return managerInstance;
   };
 };

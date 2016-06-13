@@ -12,7 +12,7 @@ fs.readdirSync(__dirname)
       (file.slice(-3) === '.js');
   })
   .forEach(function(file) {
-    var model = file.split('Wrapper.js')[0];
+    var model = file.split('_wrapper.js')[0];
     wrapper[model] = require('./' +file)();
   });
 

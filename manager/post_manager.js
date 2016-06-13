@@ -1,4 +1,4 @@
-var Base = require('./BaseManager');
+var Base = require('./base_manager');
 var util = require('util');
 var co = require('co');
 var managerInstance = null;
@@ -209,9 +209,7 @@ PostManager.prototype.login = function(user, callback) {
 
 module.exports = function() {
   return function(db, redis) {
-    if (managerInstance === null) {
-      managerInstance = new PostManager(db, redis);
-    }
+    managerInstance = new PostManager(db, redis);
     return managerInstance;
   };
 };

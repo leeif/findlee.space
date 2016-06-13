@@ -1,23 +1,19 @@
 var express = require('express');
-var redis = require('redis');
+var redis = require('./redis');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var attachDB = require('./middlewares/AttachDB');
-var attachRedis = require('./middlewares/AttachRedis');
-var requireLogin = require('./middlewares/RequireLogin');
 var http = require('http');
 var debug = require('debug')('findlee.space:server');
 var routes = require('./routers');
 var db = require('./modelsWrapper');
+var middlewares = require('./middlewares');
 var app = express();
 var server = http.createServer(app);
 var env = process.env.NODE_ENV || 'development';
-var redis;
-
 var config = require('./config/app')[env];
 
 app.set('env', env);
@@ -46,14 +42,15 @@ app.use(session({
 }));
 app.use(express.static(path.join(__dirname, 'public/')));
 //middlewares that attach db  connection to request object
-app.use(attachDB(db));
+app.use(middlewares.attachDB(db));
 //attach redis to the request object
-app.use(attachRedis(redis));
+app.use(middlewares.attachRedis(redis));
 
 // register router in app.
 if(app.get('env') !== 'test'){
-  app.use(['/blog/admin(?!/login$)*'], requireLogin());
+  app.use(/\/blog\/admin(?!\/login$).*/, middlewares.requireLogin());
 }
+app.use(/\/blog(?!\/api.*).*/, middlewares.blogVistor());
 app.use('/', routes);
 
 // catch 404 and forward to error handler

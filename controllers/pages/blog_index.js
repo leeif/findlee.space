@@ -1,9 +1,10 @@
 var util = require('util');
-var Base = require('../BaseController');
+var Base = require('../base_controller');
 var Manager = require('../../manager');
 
 function BlogIndex() {
   Base.call(this);
+  this.name = 'BlogIndex';
 }
 
 util.inherits(BlogIndex, Base);
@@ -14,6 +15,7 @@ BlogIndex.prototype.run = function(req, res, next) {
     if (err) {
       next(err);
     } else {
+      console.log("Blog Index");
       res.status(200).render('blog/blogIndex.html', {
         articles: result.articles,
         host: req.headers.host

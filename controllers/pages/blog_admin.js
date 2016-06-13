@@ -1,8 +1,9 @@
 var util = require('util');
-var Base = require('../BaseController');
+var Base = require('../base_controller');
 
 function BlogAdmin() {
   Base.call(this);
+  this.name = 'BlogAdmin';
 }
 
 util.inherits(BlogAdmin, Base);
