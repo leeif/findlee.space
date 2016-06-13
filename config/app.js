@@ -7,18 +7,13 @@ module.exports = {
     },
     session: {
       resave: false,
-<<<<<<< HEAD
-      maxAge: 3600000,
-      domain: "findlee.space"
-=======
       maxAge: 3600000*24,
-      domain: "localhost"
+      domain: "findlee.space"
     },
     redis: {
       prefix: "findlee_blog",
       port: 6379,
       password: 'w19920610'
->>>>>>> dev
     }
   },
 
