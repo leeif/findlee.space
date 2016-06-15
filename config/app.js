@@ -13,7 +13,7 @@ module.exports = {
     redis: {
       prefix: "findlee_blog",
       port: 6379,
-      password: 'w19920610'
+      password: 'mushareredis'
     }
   },
 
@@ -49,7 +49,7 @@ module.exports = {
     redis: {
       prefix: "findlee_blog",
       port: 6379,
-      password: 'w19920610'
+      password: 'mushareredis'
     }
   }
 };
