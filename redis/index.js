@@ -8,7 +8,7 @@ var config = require(__dirname + '/../config/app')[env];
 var Redis = require("ioredis");
 var redis = new Redis({
   port: config.redis.port,
-  password: '',
+  password: config.redis.password,
 });
 var models = {};
 
