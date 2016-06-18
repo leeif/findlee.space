@@ -40,6 +40,7 @@ GetManager.prototype.getArticle = function(cid, ip, callback) {
         yield contents[0].increment({
           'visitor': 1,
         });
+        contents.visitor++;
       }
       article = formatArticle(contents[0], false);
     } catch (err) {
