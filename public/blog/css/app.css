@@ -4655,6 +4655,11 @@ body {
         .blog-post .title p {
           width: 15%;
           float: right; } }
+  .blog-post .user {
+    padding: 0 1rem; }
+    .blog-post .user p {
+      margin: 0.5rem 0;
+      color: #7F7F7F; }
   .blog-post .img {
     display: block;
     padding: 0 1rem; }
@@ -4665,6 +4670,7 @@ body {
       margin: 0; }
     .blog-post .keyword li {
       float: none;
+      margin: 0.5rem 0;
       display: inline-block; }
   .blog-post .content {
     margin: 0.5 0rem;
@@ -4828,6 +4834,22 @@ body {
     padding: 0; }
   .article .title li {
     display: inline-block; }
+
+.article .user {
+  margin-right: 1rem;
+  color: #2199e8;
+  font-weight: bold; }
+
+.article .modified {
+  margin-right: 1rem;
+  color: #76787F; }
+  .article .modified span {
+    color: #000000; }
+
+.article .views {
+  color: #76787F; }
+  .article .views span {
+    color: #000000; }
 
 .article .body {
   width: 100%;

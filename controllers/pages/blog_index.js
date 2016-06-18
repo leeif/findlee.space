@@ -15,7 +15,6 @@ BlogIndex.prototype.run = function(req, res, next) {
     if (err) {
       next(err);
     } else {
-      console.log("Blog Index");
       res.status(200).render('blog/blogIndex.html', {
         articles: result.articles,
         host: req.headers.host

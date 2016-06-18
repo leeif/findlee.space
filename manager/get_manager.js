@@ -101,6 +101,8 @@ function formatArticle(data, isList) {
     uid: data.get('user').get('uid'),
     screenName: data.get('user').get('screenName')
   };
+
+  article.visitor = data.visitor;
   return article;
 }
 
@@ -115,6 +117,7 @@ GetManager.prototype.getArticles = function(pageIndex, callback) {
     'created',
     'authorId',
     'modified',
+    'visitor'
   ];
   sqlData.include = [{
     model: models.relationships,

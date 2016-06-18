@@ -26,7 +26,10 @@
       <article class="blog-post">
         <section class="title clearfix">
           <h4><a href="http://<%= host %>/blog/article/<%= article.cid %>"><%= article.title %></a></h4>
-          <p><%= article.created.formated %></p>
+          <p><%= article.modified.formated %></p>
+        </section>
+        <section class="user">
+          <p><%= article.user.screenName %></p>
         </section>
         <section class="keyword">
           <ul>
