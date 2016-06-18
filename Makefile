@@ -15,6 +15,9 @@ install-dev:
 	npm install
 	bower install
 
+stop-pro:
+	forever stop app.js
+
 migration-pro:
 	node_modules/.bin/sequelize db:migrate --env production --config config/mysql.js
 
