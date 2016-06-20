@@ -35,7 +35,7 @@ GetManager.prototype.getArticle = function(cid, ip, callback) {
     try {
       lastVisitAt = yield self.redis.visitor.getArticle(cid, ip);
       contents = yield self.db.contents.query(sqlData); 
-      if((parseInt(lastVisitAt) + 60*60*1000) < now) {
+      if(lastVisitAt === null || ((parseInt(lastVisitAt) + 60*60*1000) < now)) {
         yield self.redis.visitor.setArticle(cid, ip, now);
         yield contents[0].increment({
           'visitor': 1,
