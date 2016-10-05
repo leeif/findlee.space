@@ -60,6 +60,10 @@ router.get('/blog/api/articles/get', function(req, res, next) {
 });
 
 //post
+router.post('/blog/api/article/:cid/image/upload', function(req, res, next) {
+  post.UploadImage.run(req, res, next);
+});
+
 router.post('/blog/api/article/publish', function(req, res, next) {
   post.BlogPublish.run(req, res, next);
 });

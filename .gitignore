@@ -40,5 +40,6 @@ Thumbs.db
 dump.rdb
 node_modules
 public/components
+public/blog/image/article_*
 gulpfile.js
 public/blog/scss
