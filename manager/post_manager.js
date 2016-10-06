@@ -1,6 +1,11 @@
 var Base = require('./base_manager');
 var util = require('util');
 var co = require('co');
+var fs = require('fs');
+var mime = require('mime-types');
+var path = require('path');
+var utils = require('../tool/utils');
+
 var managerInstance = null;
 
 function PostManager(db, redis) {
@@ -61,17 +66,17 @@ PostManager.prototype.addRelationship = function(relationship, callback) {
   };
   sqlData.defaults = {
     cid: relationship.cid,
-    mid:  relationship.mid
+    mid: relationship.mid
   };
   co(function*() {
     try {
       var relationship = yield self.db.relationships.queryOrInsert(sqlData);
-      if(relationship[1]){
+      if (relationship[1]) {
         return {
           cid: relationship[0].get('mid'),
           mid: relationship[0].get('cid')
         };
-      }else{
+      } else {
         throw new Error('Relationship Already Exits');
       }
     } catch (err) {
@@ -83,19 +88,52 @@ PostManager.prototype.addRelationship = function(relationship, callback) {
     console.log(err);
     onError(err);
   });
+
   function onError(err) {
     callback({
       status: 500,
       err: err.msg,
     });
   }
-  
+
   function onSuccess(result) {
     callback(null, {
       status: 200,
       relationship: result
     });
   }
+};
+
+PostManager.prototype.uploadImage = function(busboy, articleId, callback) {
+  busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+    if(mime.lookup('jpg') !== mimetype && mime.lookup('png') !== mimetype) {
+      onError(new Error('Only Receive Image File'));
+    }
+    var dirpath = path.join(__dirname, '../public/blog/image/article_' + articleId);
+    fs.stat(dirpath, function(err, stats) {
+      if (err || !stats.isDirectory()) {
+        fs.mkdirSync(dirpath);
+      }
+      filename = Date.now() + '.' + mime.extension(mimetype);
+      var filepath = path.join(dirpath, filename);
+      file.pipe(fs.createWriteStream(filepath));
+      file.on('end', function() {
+        onSuccess(filename);
+      });
+    });
+
+    function onError(err) {
+      callback({
+        error: err
+      });
+    }
+
+    function onSuccess(result) {
+      callback(null, {
+        filename: filename
+      });
+    }
+  });
 };
 
 PostManager.prototype.publishArticle = function(article, callback) {
@@ -154,7 +192,6 @@ PostManager.prototype.publishArticle = function(article, callback) {
 
 PostManager.prototype.login = function(user, callback) {
   var self = this;
-  console.log(user);
   var redirect = user.redirect || '/blog';
   var sqlData = {};
   if (user.account.indexOf('@') != -1) {
@@ -206,6 +243,8 @@ PostManager.prototype.login = function(user, callback) {
     });
   }
 };
+
+
 
 module.exports = function() {
   return function(db, redis) {
