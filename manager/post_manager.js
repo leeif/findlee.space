@@ -104,12 +104,12 @@ PostManager.prototype.addRelationship = function(relationship, callback) {
   }
 };
 
-PostManager.prototype.uploadImage = function(busboy, articleId, callback) {
+PostManager.prototype.uploadImage = function(busboy, callback) {
   busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
     if(mime.lookup('jpg') !== mimetype && mime.lookup('png') !== mimetype) {
       onError(new Error('Only Receive Image File'));
     }
-    var dirpath = path.join(__dirname, '../public/blog/image/article_' + articleId);
+    var dirpath = path.join(__dirname, '../public/blog/image/article');
     fs.stat(dirpath, function(err, stats) {
       if (err || !stats.isDirectory()) {
         fs.mkdirSync(dirpath);

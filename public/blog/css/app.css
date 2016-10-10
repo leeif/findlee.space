@@ -4798,6 +4798,10 @@ body {
     max-width: 20rem;
     display: inline-block; }
 
+.editor .editor-upload-image {
+  padding-top: 0.2rem;
+  padding-bottom: 0.8rem; }
+
 .editor .editor-text {
   padding-bottom: 4rem; }
   .editor .editor-text textarea {

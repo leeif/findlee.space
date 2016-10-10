@@ -16,6 +16,7 @@ Editor.prototype.init = function() {
   } else {
     this.bindPublish(this.option.publishButton);
   }
+  this.bindUploadImage(this.option.uploadImageModal);
 };
 
 Editor.prototype.setListener = function() {
@@ -27,6 +28,30 @@ Editor.prototype.setListener = function() {
   this.setAuthorListener();
   //tagInput listener
   this.setTagInputListener();
+};
+
+Editor.prototype.bindUploadImage = function(modal) {
+  var self = this;
+  modal.find('.image-file').fileupload({
+    url: '/blog/api/article/image/upload',
+    dataType: 'json',
+    add: function(e, data) {
+      console.log(data.files);
+      data.context = modal.find('.upload').click(function(){
+        data.submit();
+      });
+    },
+    done: function(e, data) {
+      console.log(data.result.filename);
+      var url = '/blog/image/article/' + data.result.filename;
+      self.option.text.val(self.option.text.val() + '\n![](' + url + ')');
+      self.option.text.trigger("propertychange");
+      modal.foundation('close');
+    },
+    fail: function(e, data) {
+      console.log('Upload Failed');
+    }
+  });
 };
 
 Editor.prototype.bindPublish = function(button) {
@@ -49,6 +74,19 @@ Editor.prototype.bindUpdate = function(button) {
 
 Editor.prototype.setTextListener = function() {
   var self = this;
+  // var uploadButton = self.option.uploadImageButton;
+  // this.option.text.focusin(function() {
+  //   console.log('focus in');
+  //   if(uploadButton.hasClass('disabled')) {
+  //     uploadButton.removeClass('disabled');
+  //   }
+  // });
+  // this.option.text.focusout(function() {
+  //   console.log('focus out');
+  //   if(!uploadButton.hasClass('disabled')) {
+  //     uploadButton.addClass('disabled');
+  //   }
+  // });
   this.option.text.bind('input propertychange', function() {
     //update preview
     self.option.preview.html(marked(self.option.text.val()));
@@ -276,6 +314,8 @@ $(document).ready(function() {
     text: $('.editor-text textarea'),
     preview: $('.editor-text .preview'),
     updateButton: $('.editor-footer .update'),
-    publishButton: $('.editor-footer .publish')
+    publishButton: $('.editor-footer .publish'),
+    uploadImageModal: $('#uploadImageModal'),
+    // uploadImageButton: $('.editor-upload-image .button')
   });
 });
