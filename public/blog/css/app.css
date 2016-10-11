@@ -4779,18 +4779,22 @@ body {
     font-size: 24px;
     height: 3rem; }
 
-.editor .editor-author, .editor .editor-tag {
+.editor .editor-author,
+.editor .editor-tag {
   padding: 0rem 0.2rem;
   background: #fefefe;
   box-shadow: inset 0 1px 2px rgba(10, 10, 10, 0.1);
   border: 1px solid #cacaca;
   margin-bottom: 1rem; }
-  .editor .editor-author span, .editor .editor-tag span {
+  .editor .editor-author span,
+  .editor .editor-tag span {
     text-transform: none;
     display: inline-block; }
-  .editor .editor-author .fa-times, .editor .editor-tag .fa-times {
+  .editor .editor-author .fa-times,
+  .editor .editor-tag .fa-times {
     cursor: pointer; }
-  .editor .editor-author input, .editor .editor-tag input {
+  .editor .editor-author input,
+  .editor .editor-tag input {
     font-weight: bold;
     box-shadow: inset 0 1px 0px rgba(10, 10, 10, 0.1);
     border: none;
@@ -4801,6 +4805,10 @@ body {
 .editor .editor-upload-image {
   padding-top: 0.2rem;
   padding-bottom: 0.8rem; }
+
+.editor #uploadImageModal .file-name {
+  display: block;
+  margin-bottom: 0.5rem; }
 
 .editor .editor-text {
   padding-bottom: 4rem; }
@@ -4822,7 +4830,8 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%; }
-  .editor .editor-footer .update, .editor .editor-footer .publish {
+  .editor .editor-footer .update,
+  .editor .editor-footer .publish {
     float: right;
     border-radius: 3px;
     font-weight: bold;

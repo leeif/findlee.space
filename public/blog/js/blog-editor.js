@@ -37,6 +37,7 @@ Editor.prototype.bindUploadImage = function(modal) {
     dataType: 'json',
     add: function(e, data) {
       console.log(data.files);
+      modal.find('.file-name').html(data.files[0].name);
       data.context = modal.find('.upload').click(function(){
         data.submit();
       });
