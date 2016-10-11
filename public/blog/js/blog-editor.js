@@ -32,27 +32,31 @@ Editor.prototype.setListener = function() {
 
 Editor.prototype.bindUploadImage = function(modal) {
   var self = this;
-  modal.find('.image-file').fileupload({
-    url: '/blog/api/article/image/upload',
-    dataType: 'json',
-    add: function(e, data) {
-      console.log(data.files);
-      modal.find('.file-name').html(data.files[0].name);
-      data.context = modal.find('.upload').click(function(){
-        data.submit();
-      });
-    },
-    done: function(e, data) {
-      console.log(data.result.filename);
-      var url = '/blog/image/article/' + data.result.filename;
-      self.option.text.val(self.option.text.val() + '\n![](' + url + ')');
-      self.option.text.trigger("propertychange");
-      modal.foundation('close');
-    },
-    fail: function(e, data) {
-      console.log('Upload Failed');
-    }
+  modal.find('.upload').click(function() {
+    self.uploadImage(modal);
   });
+  // modal.find('.image-file').fileupload({
+  //   url: '/blog/api/article/image/upload',
+  //   dataType: 'json',
+  //   maxNumberOfFiles : 1,
+  //   add: function(e, data) {
+  //     console.log(data.files);
+  //     modal.find('.file-name').html(data.files[0].name);
+  //     data.context = modal.find('.upload').click(function(){
+  //       data.submit();
+  //     });
+  //   },
+  //   done: function(e, data) {
+  //     console.log(data.result.filename);
+  //     var url = '/blog/image/article/' + data.result.filename;
+  //     self.option.text.val(self.option.text.val() + '\n![](' + url + ')');
+  //     self.option.text.trigger("propertychange");
+  //     modal.foundation('close');
+  //   },
+  //   fail: function(e, data) {
+  //     console.log('Upload Failed');
+  //   }
+  // });
 };
 
 Editor.prototype.bindPublish = function(button) {
@@ -155,6 +159,32 @@ Editor.prototype.addRelationship = function(mid, callback) {
     callback(null, data);
   }).fail(function(err) {
     callback(err);
+  });
+};
+
+Editor.prototype.uploadImage = function(modal) {
+  var self = this;
+  console.log('uploadImage');
+  var formData = new FormData();
+  formData.append('file', modal.find('.image-file').prop('files')[0]);
+  $.ajax({
+    url: "/blog/api/article/image/upload",
+    type: "POST",
+    dataType: 'json',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(response) {
+      // .. do something
+      console.log(response);
+      var url = '/blog/image/article/' + response.filename;
+      self.option.text.val(self.option.text.val() + '\n![](' + url + ')');
+      self.option.text.trigger("propertychange");
+      modal.foundation('close');
+    },
+    error: function(jqXHR, textStatus, errorMessage) {
+      console.log(errorMessage); // Optional
+    }
   });
 };
 
@@ -287,7 +317,7 @@ Editor.prototype.setTagView = function(metas, i, element) {
     '<span class="fa fa-times"></span>' +
     '</span>');
   jqObj.find('.fa-times').click(function() {
-    if(self.option.type === 'write'){
+    if (self.option.type === 'write') {
       jqObj.remove();
       metas.splice(i, 1);
       return;
