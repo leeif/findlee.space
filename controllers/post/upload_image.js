@@ -18,6 +18,7 @@ UploadImage.prototype.run = function(req, res, next) {
       res.status(200).json(data);
     }
   });
+  req.pipe(req.busboy);
 };
 
 module.exports = UploadImage;

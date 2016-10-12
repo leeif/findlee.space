@@ -33,7 +33,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(busboy({
-  immediate: true,
   limits: {
     fileSize: 3 * 1024 * 1024 //3MB
   }
