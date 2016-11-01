@@ -46,8 +46,8 @@ Article.prototype.getComments = function() {
       jqobj.find('.text p').text(item.text);
       var date = new Date(item.created * 1000);
       var dateString = date.getFullYear() + '.' +
-        date.getMonth() + '.' +
-        date.getDay() + ' ' +
+        (date.getMonth()+1) + '.' +
+        date.getDate() + ' ' +
         date.getHours() + ':' +
         date.getMinutes();
       jqobj.find('.created p').text(dateString);
