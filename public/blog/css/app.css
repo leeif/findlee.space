@@ -4596,6 +4596,12 @@ body {
   background: #e6e6e6;
   border-left: 2px solid #2199e8; }
 
+.divider {
+  margin: 1rem 0;
+  height: 0.1rem;
+  width: 100%;
+  background: #e6e6e6; }
+
 .header {
   text-align: center;
   background: url("../image/kamakura.jpg");
@@ -4884,6 +4890,45 @@ body {
       background: #2199e8; }
       .article .body .side-menu .selected a {
         color: #ffffff; }
+
+.comment-container {
+  background: #FFFFFF; }
+  .comment-container .comments .title {
+    font-weight: bold;
+    color: #2199e8;
+    font-size: 1.5rem;
+    margin-bottom: 0rem; }
+  .comment-container .comments .load {
+    display: none; }
+  .comment-container .comments .item {
+    border-style: dashed;
+    border-color: #e6e6e6;
+    border-width: 0 0 0.1rem 0;
+    padding: 1rem 0; }
+    .comment-container .comments .item .username {
+      font-weight: bold;
+      font-size: 1.5rem; }
+    .comment-container .comments .item .contents {
+      width: 80%; }
+    .comment-container .comments .item .date p {
+      margin: 0;
+      display: block;
+      float: right; }
+  .comment-container .comment-writer {
+    padding-top: 2rem; }
+    .comment-container .comment-writer .title {
+      font-weight: bold;
+      color: #2199e8;
+      font-size: 1.5rem;
+      margin-bottom: 0rem; }
+    .comment-container .comment-writer textarea {
+      background-color: #FFFFFF;
+      box-shadow: 0 -1px 2px 0 rgba(0, 0, 0, 0.24);
+      resize: none;
+      height: 200px; }
+    .comment-container .comment-writer .submit {
+      margin-bottom: 0.5rem;
+      font-size: 1rem; }
 
 .blog-login .form {
   width: 100%;

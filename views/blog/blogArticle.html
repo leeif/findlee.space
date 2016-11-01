@@ -5,111 +5,155 @@
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title><%= article.title %></title>
+  <title>
+    <%= article.title %>
+  </title>
   <link rel="stylesheet" href="http://<%= host %>/blog/css/app.css">
 </head>
 
 <body>
-  <%- include('blogTopBar.html') %>  
-  <!-- article -->
-  <article class="article">
-    <section class="title row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
-      <h3 class="columns"><%= article.title %></h3>
-      <div class="columns">
-        <ul>
-          <% article.metas.forEach(function(tag){ %>
-            <li class="tag">
-              <%= tag.name %>
-            </li>
-            <% }); %>
-            <li class="user">
-              <a href=""><%= article.user.screenName %></a>
-            </li>
-            <li class="modified">
-              <span>Last Update : </span><%= article.modified.formated %>
-            </li>
-            <li class="views">
-              <span>Views : </span><%= article.visitor %>
-            </li>
-        </ul>
-      </div>
-      <div class="author">
-      </div class="date">
-      <div>
-      </div>
-    </section>
-    <div class="body">
-      <section class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
-        <div class="blog-display column large-8" id="blog-display">
-        <% if(article.html) {%>
-          <%- article.html.text %>
-        <% } %>
+  <%- include('blogTopBar.html') %>
+    <!-- article -->
+    <article class="article">
+      <section class="title row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+        <h3 class="columns"><%= article.title %></h3>
+        <div class="columns">
+          <ul>
+            <% article.metas.forEach(function(tag){ %>
+              <li class="tag">
+                <%= tag.name %>
+              </li>
+              <% }); %>
+                <li class="user">
+                  <a href="">
+                    <%= article.user.screenName %>
+                  </a>
+                </li>
+                <li class="modified">
+                  <span>Last Update : </span>
+                  <%= article.modified.formated %>
+                </li>
+                <li class="views">
+                  <span>Views : </span>
+                  <%= article.visitor %>
+                </li>
+          </ul>
         </div>
-        <div class="side-menu large-4 columns">
-          <nav class="columns float-panel">
-            <% function showTitle(data){ %>
-              <% if(data.lowerDepth.length !== 0) {%>
-                <ul>
-                  <% data.lowerDepth.forEach(function(item) { %>
-                    <li>
-                      <a href="#header<%= item.num %>">
-                        <%= item.text %>
-                      </a>
-                    </li>
-                    <% showTitle(item); %>
-                      <% }); %>
-                </ul>
-                <% } %>
-              <% } %>
-            <% if(article.html) {%>
-              <% showTitle(article.html.title) %>
-            <% } %>
-          </nav>
+        <div class="author">
+        </div class="date">
+        <div>
         </div>
       </section>
+      <div class="body">
+        <section class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+          <div class="blog-display column large-8" id="blog-display">
+            <% if(article.html) {%>
+              <%- article.html.text %>
+                <% } %>
+          </div>
+          <div class="side-menu large-4 columns">
+            <nav class="columns float-panel">
+              <% function showTitle(data){ %>
+                <% if(data.lowerDepth.length !== 0) {%>
+                  <ul>
+                    <% data.lowerDepth.forEach(function(item) { %>
+                      <li>
+                        <a href="#header<%= item.num %>">
+                          <%= item.text %>
+                        </a>
+                      </li>
+                      <% showTitle(item); %>
+                        <% }); %>
+                  </ul>
+                  <% } %>
+                    <% } %>
+                      <% if(article.html) {%>
+                        <% showTitle(article.html.title) %>
+                          <% } %>
+            </nav>
+          </div>
+        </section>
+      </div>
+    </article>
+    <div class="comment-container">
+      <div class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+        <div class="comments large-8 columns">
+          <p class="title">Comments</p>
+          <div class="divider"></div>
+          <div class="load">
+            <p>No Comments</p>
+          </div>
+          <div class="item clearfix">
+            <div class="username">
+              <span>xxxxx</span>
+            </div>
+            <div class="contents">
+              <p>asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda</p>
+            </div>
+            <div class="date">
+              <p>2012年8月10日 14:27</p>
+            </div>
+          </div>
+        </div>
+        <div class="large-4 columns">
+        </div>
+      </div>
+      <div class="row large-9 large-centered medium-11 medium-centered small-11 small-centered clearfix">
+        <div class="comment-writer large-8 columns">
+          <p class="title">Write A Comment</p>
+          <div class="divider"></div>
+          <textarea class="text"></textarea>
+          <div class="username">
+            <input type="text" placeholder="Your Name">
+          </div>
+          <button class="button submit">submit</button>
+        </div>
+        <div class="large-4 columns">
+        </div>
+      </div>
     </div>
-  </article>
-  <%- include('blogFooter.html') %>  
-  <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.easing.1.2.js"></script>
-  <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.visualNav.min.js"></script>
-  <script type="text/javascript" src="http://<%= host %>/globalscript/float-panel.js"></script>
-  <script type="text/javascript">
-  $(function() {
-    $('.side-menu').visualNav({
-      link: 'a', // add a link class, as necessary (e.g. 'a.menu')
-      targetAttr: 'href', // added in case you have link = "div" and attribute something like
-      selectedAppliedTo: 'li', // where to add the selected class name; to only apply to the link, use the same value as is in the link option
-      contentClass: 'content', // content class to get height of the section
-      contentLinks: 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll)
-      externalLinks: 'external', // class name of links that link to external content.
-      useHash: true, // if true, the location hash will be updated
+    <%- include('blogFooter.html') %>
+      <script type="text/javascript" src="http://<%= host %>/components/jquery/dist/jquery.min.js"></script>
+      <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.easing.1.2.js"></script>
+      <script type="text/javascript" src="http://<%= host %>/globalscript/jquery.visualNav.min.js"></script>
+      <script type="text/javascript" src="http://<%= host %>/globalscript/float-panel.js"></script>
+      <script type="text/javascript">
+      $(function() {
+        $('.side-menu').visualNav({
+          link: 'a', // add a link class, as necessary (e.g. 'a.menu')
+          targetAttr: 'href', // added in case you have link = "div" and attribute something like
+          selectedAppliedTo: 'li', // where to add the selected class name; to only apply to the link, use the same value as is in the link option
+          contentClass: 'content', // content class to get height of the section
+          contentLinks: 'visualNav', // class name of links inside the content that act like the visualNav menu (smooth scroll)
+          externalLinks: 'external', // class name of links that link to external content.
+          useHash: true, // if true, the location hash will be updated
 
-      // Classes added to items
-      inViewClass: 'inView', // css class added to items in the viewport
-      selectedClass: 'selected', // css class applied to menu when a link is selected (highlighted)
-      currentContent: 'current', // css class applied to the content block when it is currently selected in the menu.
+          // Classes added to items
+          inViewClass: 'inView', // css class added to items in the viewport
+          selectedClass: 'selected', // css class applied to menu when a link is selected (highlighted)
+          currentContent: 'current', // css class applied to the content block when it is currently selected in the menu.
 
-      // Appearance
-      bottomMargin: 0, // margin from the end of the page where the last menu item is used (in case the target is short)
-      fitContent: false, // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
-      offsetTop: 0, // add a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
-      scrollOnInit: false, // scroll to first item automatically on initialization
+          // Appearance
+          bottomMargin: 0, // margin from the end of the page where the last menu item is used (in case the target is short)
+          fitContent: false, // If true, the contentClass width will be adjusted to fit the browser window (for horizontal pages).
+          offsetTop: 0, // add a top offset value (pixels) or jQuery element (height is measured), of any top menu or gap.
+          scrollOnInit: false, // scroll to first item automatically on initialization
 
-      // Animation
-      animationTime: 500, // page scrolling time in milliseconds or function( distance ) { return milliseconds; }
-      stopOnInteraction: true, // if the user presses any key or scrolls the mouse, the animation will cancel
-      easing: ['swing', 'swing'], // horizontal, vertical easing; it might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
+          // Animation
+          animationTime: 500, // page scrolling time in milliseconds or function( distance ) { return milliseconds; }
+          stopOnInteraction: true, // if the user presses any key or scrolls the mouse, the animation will cancel
+          easing: ['swing', 'swing'], // horizontal, vertical easing; it might be best to leave one axis as swing [ 'swing', 'easeInCirc' ]
 
-      // Callbacks
-      // visNav is visualNavigation object (see the callbacks page)
-      // $selected is a jQuery object of the currently selected content (class name from "contentClass")
-      initialized: function(visNav, $selected) {}, // Callback executed when the visualNav plugin has finished initializing
-      beforeAnimation: function(visNav, $selected) {}, // Callback executed before the animation begins moving to the targetted element
-      complete: function(visNav, $selected) {}, // Callback executed when the targetted element is in view and scrolling animation has completed
-      changed: function(visNav, $selected) {} // Callback executed every time the current menu item changes
-    });
-  });
-  </script>
+          // Callbacks
+          // visNav is visualNavigation object (see the callbacks page)
+          // $selected is a jQuery object of the currently selected content (class name from "contentClass")
+          initialized: function(visNav, $selected) {}, // Callback executed when the visualNav plugin has finished initializing
+          beforeAnimation: function(visNav, $selected) {}, // Callback executed before the animation begins moving to the targetted element
+          complete: function(visNav, $selected) {}, // Callback executed when the targetted element is in view and scrolling animation has completed
+          changed: function(visNav, $selected) {} // Callback executed every time the current menu item changes
+        });
+      });
+      </script>
 </body>
+
 </html>
