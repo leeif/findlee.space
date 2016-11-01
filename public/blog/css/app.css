@@ -4898,19 +4898,17 @@ body {
     color: #2199e8;
     font-size: 1.5rem;
     margin-bottom: 0rem; }
-  .comment-container .comments .load {
-    display: none; }
   .comment-container .comments .item {
     border-style: dashed;
     border-color: #e6e6e6;
     border-width: 0 0 0.1rem 0;
     padding: 1rem 0; }
-    .comment-container .comments .item .username {
+    .comment-container .comments .item .author {
       font-weight: bold;
-      font-size: 1.5rem; }
-    .comment-container .comments .item .contents {
+      font-size: 1.2rem; }
+    .comment-container .comments .item .text {
       width: 80%; }
-    .comment-container .comments .item .date p {
+    .comment-container .comments .item .created p {
       margin: 0;
       display: block;
       float: right; }

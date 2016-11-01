@@ -195,8 +195,8 @@ PostManager.prototype.addComment = function(comment, callback){
   co(function*() {
     try {
       yield self.db.comments.insert({
-        cid: comment.articleId,
-        author: comment.username,
+        cid: comment.cid,
+        author: comment.author,
         text: comment.text,
         created: Date.now()/1000
       });

@@ -59,6 +59,10 @@ router.get('/blog/api/articles/get', function(req, res, next) {
   get.GetArticles.run(req, res, next);
 });
 
+router.get('/blog/api/article/:cid/comments', function(req, res, next) {
+  get.GetComments.run(req, res, next);
+});
+
 //post
 router.post('/blog/api/article/image/upload', function(req, res, next) {
   post.UploadImage.run(req, res, next);

@@ -83,17 +83,6 @@
           <div class="load">
             <p>No Comments</p>
           </div>
-          <div class="item clearfix">
-            <div class="username">
-              <span>xxxxx</span>
-            </div>
-            <div class="contents">
-              <p>asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasda</p>
-            </div>
-            <div class="date">
-              <p>2012年8月10日 14:27</p>
-            </div>
-          </div>
         </div>
         <div class="large-4 columns">
         </div>
@@ -103,7 +92,7 @@
           <p class="title">Write A Comment</p>
           <div class="divider"></div>
           <textarea class="text"></textarea>
-          <div class="username">
+          <div class="author">
             <input type="text" placeholder="Your Name">
           </div>
           <button class="button submit">submit</button>
@@ -153,7 +142,9 @@
           changed: function(visNav, $selected) {} // Callback executed every time the current menu item changes
         });
       });
+      var cid = <%= cid %>;
       </script>
+      <script type="text/javascript" src="/blog/js/blog-article.js"></script>
 </body>
 
 </html>

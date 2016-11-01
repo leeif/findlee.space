@@ -20,7 +20,8 @@ BlogArticle.prototype.run = function(req, res, next) {
     } else {
       res.status(200).render('blog/blogArticle.html', {
         article: result.article,
-        host: req.headers.host
+        host: req.headers.host,
+        cid: req.params.cid
       });
     }
   });
