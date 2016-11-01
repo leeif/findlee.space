@@ -190,6 +190,38 @@ PostManager.prototype.publishArticle = function(article, callback) {
   }
 };
 
+PostManager.prototype.addComment = function(comment, callback){
+  var self = this;
+  co(function*() {
+    try {
+      yield self.db.comments.insert({
+        cid: comment.articleId,
+        author: comment.username,
+        text: comment.text,
+        created: Date.now()/1000
+      });
+      return;
+    } catch (err) {
+      throw err;
+    }
+  }).then(function(result) {
+    onSuccess(result);
+  }, function(err) {
+    console.log(err);
+    onError(err);
+  });
+  function onError(err) {
+    callback({
+      error: err
+    });
+  }
+  
+  function onSuccess(result) {
+    callback(null, {
+    });
+  }
+};
+
 PostManager.prototype.login = function(user, callback) {
   var self = this;
   var redirect = user.redirect || '/blog';
