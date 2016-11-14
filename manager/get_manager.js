@@ -132,8 +132,7 @@ GetManager.prototype.getArticles = function(pageIndex, callback) {
   sqlData.limit = 10;
   sqlData.offset = pageIndex ? (pageIndex - 1) * 10 : 0;
   sqlData.order = [
-    ['modified'],
-    ['cid', 'DESC']
+    ['modified', 'DESC']
   ];
   co(function*() {
     var contents;
