@@ -10,42 +10,60 @@
 </head>
 
 <body>
-  <%- include('blogTopBar.html', {host:host}) %>  
-  <!-- header -->
-  <header class="header">
-    <ul class="header-subnav">
-      <li><a href="" class="is-active">Articles</a></li>
-      <li><a href="">Images</a></li>
-      <li><a href="">Music</a></li>
-    </ul>
-  </header>
-
-  <!-- blog list -->
-  <% articles.forEach(function(article){ %>
+  <%- include('blogTopBar.html', {host:host}) %>
+    <!-- header -->
+    <header class="header">
+      <ul class="header-subnav">
+        <li><a href="" class="is-active">Articles</a></li>
+        <li><a href="">Images</a></li>
+        <li><a href="">Music</a></li>
+      </ul>
+    </header>
+    <!-- blog list -->
     <div class="row medium-9 large-6">
-      <article class="blog-post">
-        <section class="title clearfix">
-          <h4><a href="http://<%= host %>/blog/article/<%= article.cid %>"><%= article.title %></a></h4>
-          <p><%= article.modified.formated %></p>
-        </section>
-        <section class="user">
-          <p><%= article.user.screenName %></p>
-        </section>
-        <section class="keyword">
-          <ul>
-            <% article.metas.forEach(function(meta){ %>
-              <li class="tag" data-id="<%= meta.mid %>"><%= meta.name %></li>
-            <% }); %>
-          </ul>
-        </section>
-        <section class="content">
-          <small>
+      <% data.articles.forEach(function(article){ %>
+        <article class="blog-post">
+          <section class="title clearfix">
+            <h4>
+              <a href="http://<%= host %>/blog/article/<%= article.cid %>">
+                <%= article.title %>
+              </a>
+            </h4>
+            <p>
+              <%= article.modified.formated %>
+            </p>
+          </section>
+          <section class="user">
+            <p>
+              <%= article.user.screenName %>
+            </p>
+          </section>
+          <section class="keyword">
+            <ul>
+              <% article.metas.forEach(function(meta){ %>
+                <li class="tag" data-id="<%= meta.mid %>">
+                  <%= meta.name %>
+                </li>
+                <% }); %>
+            </ul>
+          </section>
+          <section class="content">
+            <small>
           </small>
-        </section>
-      </article>
+          </section>
+        </article>
+        <% }); %>
+        <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+          <% for(var i = 1; i <= data.pageNum; i++){ %>
+            <% if(i == data.pageIndex) {%>
+              <li class="current"><%= i %></li>
+            <%} else {%>
+              <li><a href="/blog?pageIndex=<%= i %>" aria-label="Page <%= i %>"><%= i %></a></li>
+            <% } %>
+          <% } %>
+        </ul>
     </div>
-  <% }); %>
-  <%- include('blogFooter.html', {host: host}) %>  
+    <%- include('blogFooter.html', {host: host}) %>
 </body>
 
 </html>

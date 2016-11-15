@@ -111,7 +111,9 @@ function formatArticle(data, isList) {
 GetManager.prototype.getArticles = function(pageIndex, callback) {
   var self = this;
   var sqlData = {};
-  var articles = [];
+  var result = {
+    articles: []
+  };
   sqlData.attributes = [
     'cid',
     'title',
@@ -129,22 +131,26 @@ GetManager.prototype.getArticles = function(pageIndex, callback) {
   }, {
     model: models.users
   }];
-  sqlData.limit = 10;
-  sqlData.offset = pageIndex ? (pageIndex - 1) * 10 : 0;
   sqlData.order = [
     ['modified', 'DESC']
   ];
   co(function*() {
-    var contents;
+    var all;
+    var pageContents;
     try {
-      contents = yield self.db.contents.query(sqlData);
-      contents.forEach(function(item) {
-        articles.push(formatArticle(item, true));
+      all = yield self.db.contents.query(sqlData);
+      result.pageNum = all.length%5 === 0 ? all.length/5 : all.length/5 + 1;
+      result.pageIndex = pageIndex ? pageIndex : 1;
+      sqlData.limit = 5;
+      sqlData.offset = pageIndex ? (pageIndex - 1) * 5 : 0;
+      pageContents = yield self.db.contents.query(sqlData);
+      pageContents.forEach(function(item) {
+        result.articles.push(formatArticle(item, true));
       });
     } catch (err) {
       throw err;
     }
-    return articles;
+    return result;
   }).then(function(result) {
     onSuccess(result);
   }, function(err) {
@@ -162,7 +168,7 @@ GetManager.prototype.getArticles = function(pageIndex, callback) {
   function onSuccess(result) {
     callback(null, {
       status: 200,
-      articles: result
+      data: result
     });
   }
 };
