@@ -139,7 +139,8 @@ GetManager.prototype.getArticles = function(pageIndex, callback) {
     var pageContents;
     try {
       all = yield self.db.contents.query(sqlData);
-      result.pageNum = all.length%5 === 0 ? all.length/5 : all.length/5 + 1;
+      result.pageNum = all.length%5 === 0 ? Math.floor(all.length/5) : 
+        Math.floor(all.length/5) + 1;
       result.pageIndex = pageIndex ? pageIndex : 1;
       sqlData.limit = 5;
       sqlData.offset = pageIndex ? (pageIndex - 1) * 5 : 0;

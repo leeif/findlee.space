@@ -11,6 +11,7 @@
       method: 'get',
       dataType: 'json'
     }).done(function(data) {
+      console.log(data);
       self.article = self.article.concat(data);
       data.forEach(function(article) {
         self.appendArticle($('.subjects ul'), article);
