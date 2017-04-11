@@ -224,7 +224,7 @@ PostManager.prototype.addComment = function(comment, callback){
 
 PostManager.prototype.login = function(user, callback) {
   var self = this;
-  var redirect = user.redirect || '/blog';
+  var redirect = user.redirect || '/blog/admin';
   var sqlData = {};
   if (user.account.indexOf('@') != -1) {
     sqlData.where = {

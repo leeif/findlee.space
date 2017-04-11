@@ -4557,8 +4557,10 @@ body {
 .footer {
   background: #3D424A;
   padding-top: 1rem;
-  padding-bottom: 1rem; }
+  padding-bottom: 1rem;
+  width: 100%; }
   .footer .copyright {
+    position: relative;
     text-align: center;
     font-size: 0.75rem;
     font-weight: bold;
@@ -4774,8 +4776,7 @@ body {
       background: transparent; }
 
 .admin .footer {
-  width: 100%;
-  position: fixed;
+  position: absolute;
   bottom: 0; }
 
 .editor .editor-title {
