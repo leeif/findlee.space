@@ -24,7 +24,7 @@ module.exports = {
 
   production: {
     username: "root",
-    password: "",
+    password: "w19920610",
     database: "findlee",
     host: "127.0.0.1",
     dialect: "mysql",
