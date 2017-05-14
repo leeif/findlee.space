@@ -1,8 +1,8 @@
 module.exports = {
 
   development: {
-    username: "findlee",
-    password: "w19920610",
+    username: "root",
+    password: "",
     host: "127.0.0.1",
     database: "findlee_dev",
     dialect: "mysql",
@@ -23,8 +23,8 @@ module.exports = {
   },
 
   production: {
-    username: "findlee",
-    password: "w19920610",
+    username: "root",
+    password: "",
     database: "findlee",
     host: "127.0.0.1",
     dialect: "mysql",
